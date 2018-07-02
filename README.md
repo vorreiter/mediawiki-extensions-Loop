@@ -1,8 +1,7 @@
-## Welcome to GitHub Pages
+## Willkommen bei LOOP
 
-You can use the [editor on GitHub](https://github.com/oncampus/mediawiki-extensions-Loop/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+LOOP ist die neue Autorensoftware der Fachhochschule Lübeck. Die Abkürzung steht für Learning Object Online Platform. 
+Welche Features LOOP bietet findet man unter [loop.oncampus.de](https://loop.oncampus.de)
 
 ### Markdown
 
