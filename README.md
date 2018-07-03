@@ -10,3 +10,5 @@ LOOP besteht aus
 - einer Extention https://github.com/oncampus/mediawiki-extensions-Loop
 - und einem Skin https://github.com/oncampus/mediawiki-skins-Loop
 
+Folgende Extensions sind für LOOP angepasst:
+- WikiEditor: https://github.com/oncampus/mediawiki-extensions-WikiEditor
