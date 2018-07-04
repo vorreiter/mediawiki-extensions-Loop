@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Marc Vorreiter"
+		]
+	},
+	"loop-extensionname": "LOOP",
+	"loop-desc": "Learning Object Online Platform, Extension to create academic learning content",
+	"loop-tracking-category-error": "LOOP errors",
+	"loop-tracking-category-error-desc": "Pages with LOOP specific errors."
+}
