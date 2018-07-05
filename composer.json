@@ -1,6 +1,7 @@
 {
     "name": "oncampus/mediawiki-extensions-loop",
     "type": "mediawiki-extension",
+    "version":	"2.0.0",
     "description": "A mediawiki extension to create academic learning content",
 	"homepage": "https://oncampus.github.io/mediawiki-extensions-Loop",
 	"license": "GPL-3.0-or-later",    
