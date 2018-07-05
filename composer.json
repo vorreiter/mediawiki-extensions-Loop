@@ -1,5 +1,5 @@
 {
-    "name": "oncampus/mediawiki-extensions-Loop",
+    "name": "oncampus/mediawiki-extensions-loop",
     "type": "mediawiki-extension",
     "description": "A mediawiki extension to create academic learning content",
 	"homepage": "https://oncampus.github.io/mediawiki-extensions-Loop",
