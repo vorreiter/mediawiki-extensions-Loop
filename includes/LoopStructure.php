@@ -58,6 +58,7 @@ class SpecialLoopStructure extends SpecialPage {
 
 	public function execute($sub) {
 
+		$this->setHeaders();
 		$out = $this->getOutput();
 
 		$out->setPageTitle( $this->msg( 'loopstructure-specialpage-title' ) );

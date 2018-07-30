@@ -9,5 +9,6 @@
 	"loop-tracking-category-error": "LOOP errors",
 	"loop-tracking-category-error-desc": "Pages with LOOP specific errors.",
 	"specialpages-group-loop" : "LOOP",
-	"loopstructure-specialpage-title" : "Table of Contents"
+	"loopstructure-specialpage-title" : "Table of Contents",
+	"loopstructure" : "Table of Contents"
 }
