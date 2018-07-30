@@ -16,13 +16,19 @@
 		}
 	},
 	"AutoloadClasses": {
-		"LoopUpdater": "schema/LoopUpdater.php"
+		"LoopUpdater": "schema/LoopUpdater.php",
+		"LoopStructure": "includes/LoopStructure.php",
+		"LoopStructureItem": "includes/LoopStructure.php",
+		"SpecialLoopStructure": "includes/LoopStructure.php"		
 	},
 	"Hooks": {
 		"LoadExtensionSchemaUpdates":[
 			"LoopUpdater::onLoadExtensionSchemaUpdates"
 		]
 	},
+	"SpecialPages": {
+		"LoopStructure": "SpecialLoopStructure"
+	},		
 	"ResourceFileModulePaths": {
 		"localBasePath": "resources",
 		"remoteExtPath": "Loop/resources"

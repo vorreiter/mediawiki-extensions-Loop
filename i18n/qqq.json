@@ -7,5 +7,7 @@
 	"loop-extensionname": "LOOP",
 	"loop-desc": "{{desc|name=LOOP|url=https://github.com/oncampus/mediawiki-extensions-Loop}}",
 	"loop-tracking-category-error": "Name of the Loop default error tracking category",
-	"loop-tracking-category-error-desc": "Description of the Loop default error tracking category"
+	"loop-tracking-category-error-desc": "Description of the Loop default error tracking category",
+	"specialpages-group-loop" : "name of the special pages category for loop",
+	"loopstructure-specialpage-title" : "Page title for Loop Structure special page"
 }
