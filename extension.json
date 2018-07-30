@@ -15,6 +15,14 @@
 			"WikiEditor": "*"
 		}
 	},
+	"AutoloadClasses": {
+		"LoopUpdater": "schema/LoopUpdater.php"
+	},
+	"Hooks": {
+		"LoadExtensionSchemaUpdates":[
+			"LoopUpdater::onLoadExtensionSchemaUpdates"
+		]
+	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "resources",
 		"remoteExtPath": "Loop/resources"
