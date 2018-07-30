@@ -7,5 +7,8 @@
 	"loop-extensionname": "LOOP",
 	"loop-desc": "Learning Object Online Platform, Extension to create academic learning content",
 	"loop-tracking-category-error": "LOOP errors",
-	"loop-tracking-category-error-desc": "Pages with LOOP specific errors."
+	"loop-tracking-category-error-desc": "Pages with LOOP specific errors.",
+	"specialpages-group-loop" : "LOOP",
+	"loopstructure-specialpage-title" : "Table of Contents",
+	"loopstructure" : "Table of Contents"
 }
