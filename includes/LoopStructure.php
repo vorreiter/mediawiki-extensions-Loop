@@ -69,9 +69,9 @@ class LoopStructure {
 			if( intval( $structureItem->getTocLevel() ) === 0 ) {
 				$wikiText .= '[['.$structureItem->getTocText().']]'.PHP_EOL.PHP_EOL;
 			} else {
-				
 				$wikiText .= str_repeat( '=', $structureItem->getTocLevel() ).' '.$structureItem->getTocText().' '.str_repeat( '=', $structureItem->getTocLevel() ).PHP_EOL;
 			}
+			
 		}
 		
 		return $wikiText;
@@ -84,7 +84,7 @@ class LoopStructure {
 	 */
 	public function setStructureItemsFromWikiText( $wikiText ) {
 	
-		global $wgUser;# TODO is this the correct user?
+		global $wgUser;
 
 		$regex = "/(<a )(.*?)(>)(.*?)(<\\/a>)/";
 		preg_match($regex, $wikiText, $matches);
