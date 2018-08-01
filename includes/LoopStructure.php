@@ -435,7 +435,7 @@ class LoopStructureItem {
 			)
 		);
 	
-		if ($row = $res->fetchObject()) {
+		if( $row = $res->fetchObject() ) {
 	
 			$loopStructureItem = new LoopStructureItem();
 			$loopStructureItem->setId( $row->lsi_id );
