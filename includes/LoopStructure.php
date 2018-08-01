@@ -459,37 +459,3 @@ class LoopStructureItem {
 	
 	}
 }
-
-/**
- *  Special page representing the table of contents
- *  
- *
- */
-
-class SpecialLoopStructure extends SpecialPage {
-	public function __construct() {
-		parent::__construct( 'LoopStructure' );
-	}
-
-	public function execute($sub) {
-
-		$this->setHeaders();
-		$out = $this->getOutput();
-
-		$out->setPageTitle( $this->msg( 'loopstructure-specialpage-title' ) );
-
-		$out->addHtml ('<h1>');
-		$out->addWikiMsg( 'loopstructure-specialpage-title' );
-		$out->addHtml ('</h1>');
-
-	}
-
-	/**
-	 * Specify the specialpages-group loop
-	 * 
-	 * @return string
-	 */
-	protected function getGroupName() {
-		return 'loop';
-	}
-}
