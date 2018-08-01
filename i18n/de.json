@@ -1,11 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
-			"Marc Vorreiter"
+			"Marc Vorreiter",
+			"Kevin Berg"
 		]
 	},
 	"loop-extensionname": "LOOP",
 	"loop-desc": "Learning Object Online Platform, Erweiterung zum Erstellen von akademischen Lerninhalten",
 	"loop-tracking-category-error": "LOOP Fehler",
-	"loop-tracking-category-error-desc": "Seiten mit LOOP spezifischen Fehlern."
+	"loop-tracking-category-error-desc": "Seiten mit LOOP spezifischen Fehlern.",
+	"specialpages-group-loop" : "LOOP",
+	"loopstructure-specialpage-title" : "Inhaltsverzeichnis",
+	"loopstructure" : "Inhaltsverzeichnis"
 }

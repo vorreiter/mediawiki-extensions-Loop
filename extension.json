@@ -3,7 +3,8 @@
 	"namemsg": "loop-extensionname",
 	"type": "other",
 	"author": [
-		"Marc Vorreiter"
+		"Marc Vorreiter",
+		"Kevin Berg"
 	],
 	"version": "2.0.0",
 	"url": "https://github.com/oncampus/mediawiki-extensions-Loop",
@@ -16,13 +17,19 @@
 		}
 	},
 	"AutoloadClasses": {
-		"LoopUpdater": "schema/LoopUpdater.php"
+		"LoopUpdater": "schema/LoopUpdater.php",
+		"LoopStructure": "includes/LoopStructure.php",
+		"LoopStructureItem": "includes/LoopStructure.php",
+		"SpecialLoopStructure": "includes/SpecialLoopStructure.php"		
 	},
 	"Hooks": {
 		"LoadExtensionSchemaUpdates":[
 			"LoopUpdater::onLoadExtensionSchemaUpdates"
 		]
 	},
+	"SpecialPages": {
+		"LoopStructure": "SpecialLoopStructure"
+	},		
 	"ResourceFileModulePaths": {
 		"localBasePath": "resources",
 		"remoteExtPath": "Loop/resources"
