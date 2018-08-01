@@ -14,6 +14,7 @@ class LoopStructure {
 	private $mPropertiesLoaded = false;	// bool properties loaded from database
 	
 	function __construct() {
+
 		$this->loadItems();
 	}
 	
@@ -260,7 +261,7 @@ class LoopStructure {
 		}
 		
 		return true;
-		
+
 	}
 	
 }	
@@ -272,7 +273,7 @@ class LoopStructure {
 class LoopStructureItem {
 	
 	private $mId;					// id of the structure item
-	private $mStructure;			// id of the corresponding structure
+	private $mStructure = 0;		// id of the corresponding structure
 	private $mArticle;				// article id of the page
 	
 	private $mPreviousArticle;		// article id from the previous page
@@ -285,7 +286,7 @@ class LoopStructureItem {
 	private $mTocText;				// page title
 
 	function __construct() {
-	
+
 	}
 	
 	public function setId( $id ) {
@@ -456,5 +457,39 @@ class LoopStructureItem {
 				
 		}
 	
+	}
+}
+
+/**
+ *  Special page representing the table of contents
+ *  
+ *
+ */
+
+class SpecialLoopStructure extends SpecialPage {
+	public function __construct() {
+		parent::__construct( 'LoopStructure' );
+	}
+
+	public function execute($sub) {
+
+		$this->setHeaders();
+		$out = $this->getOutput();
+
+		$out->setPageTitle( $this->msg( 'loopstructure-specialpage-title' ) );
+
+		$out->addHtml ('<h1>');
+		$out->addWikiMsg( 'loopstructure-specialpage-title' );
+		$out->addHtml ('</h1>');
+
+	}
+
+	/**
+	 * Specify the specialpages-group loop
+	 * 
+	 * @return string
+	 */
+	protected function getGroupName() {
+		return 'loop';
 	}
 }
