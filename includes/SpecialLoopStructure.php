@@ -13,9 +13,14 @@ class SpecialLoopStructure extends SpecialPage {
 
 	public function execute($sub) {
 		
+		global $wgUser, $wgSecretKey;
+		$user = $wgUser; # TODO find another way to get the user
+		
 		$this->setHeaders();
 		$out = $this->getOutput();
 		$out->setPageTitle( $this->msg( 'loopstructure-specialpage-title' ) );
+		
+		$saltedToken = $wgUser->getEditToken( $wgSecretKey );
 		
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadItems();
@@ -23,51 +28,64 @@ class SpecialLoopStructure extends SpecialPage {
 		
 		$request = $this->getRequest();
 		$newStructureContent = $request->getText( 'loopstructure-content' );
+		$requestToken = $request->getText( 't' );
 		
 		$error = false;
 		
-		if( ! empty( $newStructureContent )) {
+		if( ! empty( $newStructureContent ) && ! empty( $requestToken )) {
 
-			# the content was changend
-			# use local parser to get a default parsed result
-			$localParser = new Parser();
-			$tmpTitle = Title::newFromText( 'NO TITLE' );
-			$parserOutput = $localParser->parse( $newStructureContent, $tmpTitle, new ParserOptions() );
-			
-			if( is_object( $parserOutput )) {
+			if( ! $user->isAnon() ) {
 				
-				$parsedStructure = $parserOutput->mText;
-				
-				if( ! empty( $parsedStructure )) {
-			
-					$tmpLoopStructure = new LoopStructure();
-					$tmpLoopStructure->setStructureItemsFromWikiText( $parsedStructure );
-					$newStructureContentParsedWikiText = $tmpLoopStructure->getStructureItemsAsWikiText();
+				if( $user->matchEditToken( $requestToken, $wgSecretKey )) {
 					
-					# if new parsed structure is different to the new one save it
-					if( $currentStructureAsWikiText != $newStructureContentParsedWikiText ) {
-							
-						$loopStructure->deleteItems();
-						$loopStructure->setStructureItemsFromWikiText( $parsedStructure );
-						$loopStructure->saveItems();
-						$currentStructureAsWikiText = $loopStructure->getStructureItemsAsWikiText();
+					# the content was changend
+					# use local parser to get a default parsed result
+					$localParser = new Parser();
+					$tmpTitle = Title::newFromText( 'NO TITLE' );
+					$parserOutput = $localParser->parse( $newStructureContent, $tmpTitle, new ParserOptions() );
 						
-						$out->addHTML(
-							Xml::openElement( 'div', array( 'class' => 'alert alert-success mt-3', 'role' => 'alert' ) ) .
-							$this->msg( 'loopstructure-save-success' )->parse() .
-							Xml::closeElement( 'div' )
-						);
-							
+					if( is_object( $parserOutput )) {
+					
+						$parsedStructure = $parserOutput->mText;
+					
+						if( ! empty( $parsedStructure )) {
+								
+							$tmpLoopStructure = new LoopStructure();
+							$tmpLoopStructure->setStructureItemsFromWikiText( $parsedStructure, $user );
+							$newStructureContentParsedWikiText = $tmpLoopStructure->getStructureItemsAsWikiText();
+								
+							# if new parsed structure is different to the new one save it
+							if( $currentStructureAsWikiText != $newStructureContentParsedWikiText ) {
+					
+								$loopStructure->deleteItems();
+								$loopStructure->setStructureItemsFromWikiText( $parsedStructure, $user );
+								$loopStructure->saveItems();
+								$currentStructureAsWikiText = $loopStructure->getStructureItemsAsWikiText();
+					
+								$out->addHTML(
+									Xml::openElement( 'div', array( 'class' => 'alert alert-success mt-3', 'role' => 'alert' ) ) .
+									$this->msg( 'loopstructure-save-success' )->parse() .
+									Xml::closeElement( 'div' )
+								);
+					
+							} else {
+								$error = $this->msg( 'loopstructure-save-equal-error' )->parse();
+							}
+								
+						} else {
+							$error = $this->msg( 'loopstructure-save-parsed-structure-error' )->parse();
+						}
+					
 					} else {
-						$error = $this->msg( 'loopstructure-save-equal-error' )->parse();
+						$error = $this->msg( 'loopstructure-save-parse-error' )->parse();
 					}
 					
 				} else {
-					$error = $this->msg( 'loopstructure-save-parsed-structure-error' )->parse();
+					$error = $this->msg( 'loop-token-error' )->parse();
 				}
-						
+
 			} else {
-				$error = $this->msg( 'loopstructure-save-parse-error' )->parse();
+				$error = $this->msg( 'loop-login-required' )->parse();
 			}
 			
 		}
@@ -88,6 +106,7 @@ class SpecialLoopStructure extends SpecialPage {
 			Xml::openElement( 'form', array( 'id' => 'loopstructure-form', 'method' => 'POST', 'class' => 'mt-3 mb-3' ) ) .
 			Xml::openElement( 'div', array( 'id' => 'loopstructure-content-wrapper', 'class' => 'form-group' ) ) .
 			Html::rawElement( 'textarea', array( 'name' => 'loopstructure-content', 'style' => 'width: 700px; height: 700px;' ), $currentStructureAsWikiText ) .
+			Html::rawElement( 'input', array( 'type' => 'hidden', 'name' => 't', 'value' => $saltedToken )) .
 			Xml::closeElement( 'div' ) .
 			Xml::element( 'input', array( 'type' => 'submit', 'class' => 'btn btn-primary', 'id' => 'loopstructure-submit', 'value' => $this->msg( 'submit' )->parse() ) ) .
 			Xml::closeElement( 'form' ) .

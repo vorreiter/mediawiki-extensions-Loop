@@ -46,10 +46,8 @@ class LoopStructure {
 	 * Converts wikitext to LoopStructureItems.
 	 * @param $wikiText
 	 */
-	public function setStructureItemsFromWikiText( $wikiText ) {
-	
-		global $wgUser; # TODO
-		
+	public function setStructureItemsFromWikiText( $wikiText, User $user ) {
+
 		$regex = "/(<a )(.*?)(>)(.*?)(<\\/a>)/";
 		preg_match($regex, $wikiText, $matches);
 		$rootTitleText = $matches[4];
@@ -60,7 +58,7 @@ class LoopStructure {
 		if( $this->mainPage == 0 ) {
 			$newPage = WikiPage::factory( Title::newFromText( $rootTitleText ));
 			$newContent = new WikitextContent( wfMessage( 'loopstructure-default-newpage-content' )->inContentLanguage()->text() );
-			$newPage->doEditContent( $newContent, '', EDIT_NEW, false, $wgUser );
+			$newPage->doEditContent( $newContent, '', EDIT_NEW, false, $user );
 			$newTitle = $newPage->getTitle();
 			$this->mainPage = $newTitle->getArticleId();
 		}
@@ -103,7 +101,7 @@ class LoopStructure {
 			if( $tocArticleId == 0 ) {
 				$newPage = WikiPage::factory( Title::newFromText( $tocText ) );
 				$newContent = new WikitextContent( wfMessage( 'loopstructure-default-newpage-content' )->inContentLanguage()->text());
-				$newPage->doEditContent( $newContent, '', EDIT_NEW,	false, $wgUser );
+				$newPage->doEditContent( $newContent, '', EDIT_NEW,	false, $user );
 				$newTitle = $newPage->getTitle();
 				$tocArticleId = $newTitle->getArticleId();
 			}
