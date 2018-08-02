@@ -7,57 +7,20 @@
  */
 class LoopStructure {
 	
-	private $mId = 0;					// id of the structure
-	private $mMainPage;					// article id of the main page
-	private $mStructureItems = array();	// array of structure items
-	private $mProperties = array();		// array of structure properties
-	private $mPropertiesLoaded = false;	// bool properties loaded from database
+	private $id = 0; // id of the structure
+	private $mainPage; // article id of the main page
+	private $structureItems = array(); // array of structure items
+	private $properties = array(); // array of structure properties
+	private $propertiesLoaded = false; // bool properties loaded from database
 	
 	function __construct() {
-
-		$this->loadItems();
-	}
-	
-	public function setId( $id ) {
-		$this->mId = $id;
-	}
-	
-	public function setMainPage( $mainPageId ) {
-		$this->mMainPage = $mainPageId;
-	}
-	
-	public function setProperties( $properties ) {
-		$this->properties = $properties;
-	}
-	
-	public function setPropertiesLoaded( Boolean $propertiesLoaded ) {
-		$this->mPropertiesLoaded = $propertiesLoaded;
-	}
-	
-	public function getId() {
-		return $this->mId;
-	}
-	
-	public function getPropertiesLoaded() {
-		return $this->mPropertiesLoaded;
-	}
-	
-	public function getProperties() {
-		return $this->mProperties;
-	}
-	
-	public function getMainPage() {
-		return $this->mMainPage;
-	}
-	
-	public function getStructureId() {
-		return $this->mId;
+		
 	}
 	
 	public function getStructureItems() {
-		return $this->mStructureItems;
+		return $this->structureItems;
 	}
-	 
+	
 	/**
 	 * Converts the structureitems to the table of contents as wikitext.
 	 */
@@ -65,12 +28,12 @@ class LoopStructure {
 		
 		$wikiText = '';
 
-		foreach( $this->getStructureItems() as $structureItem ) {
+		foreach( $this->structureItems as $structureItem ) {
 
-			if( intval( $structureItem->getTocLevel() ) === 0 ) {
-				$wikiText .= '[['.$structureItem->getTocText().']]'.PHP_EOL.PHP_EOL;
+			if( intval( $structureItem->tocLevel ) === 0 ) {
+				$wikiText .= '[['.$structureItem->tocText.']]'.PHP_EOL.PHP_EOL;
 			} else {
-				$wikiText .= str_repeat( '=', $structureItem->getTocLevel() ).' '.$structureItem->getTocText().' '.str_repeat( '=', $structureItem->getTocLevel() ).PHP_EOL;
+				$wikiText .= str_repeat( '=', $structureItem->tocLevel ).' '.$structureItem->tocText.' '.str_repeat( '=', $structureItem->tocLevel ).PHP_EOL;
 			}
 			
 		}
@@ -85,45 +48,46 @@ class LoopStructure {
 	 */
 	public function setStructureItemsFromWikiText( $wikiText ) {
 	
-		global $wgUser;
-
+		global $wgUser; # TODO
+		
 		$regex = "/(<a )(.*?)(>)(.*?)(<\\/a>)/";
 		preg_match($regex, $wikiText, $matches);
 		$rootTitleText = $matches[4];
 		$rootTitle = Title::newFromText($rootTitleText);
-
-		$this->setMainPage( $rootTitle->getArticleID() );
+		$this->mainPage = $rootTitle->getArticleID();
 		
 		# create new root page
-		if( $this->getMainPage() == 0 ) {
+		if( $this->mainPage == 0 ) {
 			$newPage = WikiPage::factory( Title::newFromText( $rootTitleText ));
-			$newContent = new WikitextContent(wfMessage( 'loopstructure-default-newpage-content')->inContentLanguage()->text());
+			$newContent = new WikitextContent( wfMessage( 'loopstructure-default-newpage-content' )->inContentLanguage()->text() );
 			$newPage->doEditContent( $newContent, '', EDIT_NEW, false, $wgUser );
 			$newTitle = $newPage->getTitle();
-			$this->setMainPage( $newTitle->getArticleId() );
+			$this->mainPage = $newTitle->getArticleId();
 		}
-		
+
 		$parent_id = array();
-		$parent_id[0] = $this->getMainPage();
+		$parent_id[0] = $this->mainPage;
 		$max_level = 0;
 		$sequence = 0;
 		
-		$loopStructureItem = new LoopStructureItem();
-		$loopStructureItem->setStructure( $this->getId() );
-		$loopStructureItem->setArticle( $this->getMainPage() );
-		$loopStructureItem->setPreviousArticle( 0 );
-		$loopStructureItem->setNextArticle( 0 );
-		$loopStructureItem->setParentArticle( 0 );
-		$loopStructureItem->setTocLevel( 0 );
-		$loopStructureItem->setSequence( $sequence );
-		$loopStructureItem->setTocNumber( '' );
-		$loopStructureItem->setTocText( $rootTitleText );
+		unset( $this->structureItems );
 		
-		$this->mStructureItems[$sequence] = $loopStructureItem;
+		$loopStructureItem = new LoopStructureItem();
+		$loopStructureItem->structure = $this->id;
+		$loopStructureItem->article = $this->mainPage;
+		$loopStructureItem->previousArticle = 0;
+		$loopStructureItem->nextArticle = 0;
+		$loopStructureItem->parentArticle = 0;
+		$loopStructureItem->tocLevel = 0;
+		$loopStructureItem->sequence = $sequence;
+		$loopStructureItem->tocNumber = '';
+		$loopStructureItem->tocText = $rootTitleText;
+		
+		$this->structureItems[$sequence] = $loopStructureItem;
 		$sequence++;
 	
 		$regex = "/(<li class=\"toclevel-)(\\d)( tocsection-)(.*)(<span class=\"tocnumber\">)([\\d\\.]+)(<\\/span> <span class=\"toctext\">)(.*)(<\\/span)/";
-		preg_match_all($regex, $wikiText, $matches);
+		preg_match_all( $regex, $wikiText, $matches );
 
 		for( $i=0; $i < count( $matches[0] ); $i++ ) {
 	
@@ -133,17 +97,17 @@ class LoopStructure {
 			$tocArticleId = 0;
 		
 			$itemTitle = Title::newFromText($tocText);
-			$tocArticleId  = $itemTitle->getArticleID();
+			$tocArticleId = $itemTitle->getArticleID();
 		
 			# create new page for item
 			if( $tocArticleId == 0 ) {
-				$newPage = WikiPage::factory( Title::newFromText($tocText) );
-				$newContent = new WikitextContent( wfMessage( 'loopstructure-default-newpage-content')->inContentLanguage()->text());
+				$newPage = WikiPage::factory( Title::newFromText( $tocText ) );
+				$newContent = new WikitextContent( wfMessage( 'loopstructure-default-newpage-content' )->inContentLanguage()->text());
 				$newPage->doEditContent( $newContent, '', EDIT_NEW,	false, $wgUser );
 				$newTitle = $newPage->getTitle();
 				$tocArticleId = $newTitle->getArticleId();
 			}
-	
+			
 			# get parent article
 			$parent_id[$tocLevel] = $tocArticleId;
 	
@@ -159,22 +123,22 @@ class LoopStructure {
 			$parentArticleId = intval($parentArticleId);
 
 			# set next item from the last structure item.
-			$previousItem = $this->mStructureItems[$sequence-1];
-			$previousArticleId = $previousItem->getArticle();
-			$previousItem->setNextArticle( $tocArticleId );
-
+			$previousItem = $this->structureItems[$sequence-1];
+			$previousArticleId = $previousItem->article;
+			$previousItem->nextArticle = $tocArticleId;
+			
 			$loopStructureItem = new LoopStructureItem();
-			$loopStructureItem->setStructure( $this->getId() );
-			$loopStructureItem->setArticle( $tocArticleId );
-			$loopStructureItem->setPreviousArticle( $previousArticleId );
-			$loopStructureItem->setNextArticle( 0 ); # next article will be set when building the next structure item.
-			$loopStructureItem->setParentArticle( $parentArticleId );
-			$loopStructureItem->setTocLevel( $tocLevel );
-			$loopStructureItem->setSequence( $sequence );
-			$loopStructureItem->setTocNumber( $tocNumber );
-			$loopStructureItem->setTocText( $tocText );
+			$loopStructureItem->structure = $this->id;
+			$loopStructureItem->article = $tocArticleId;
+			$loopStructureItem->previousArticle = $previousArticleId;
+			$loopStructureItem->nextArticle = 0; # next article will be set when building the next structure item.
+			$loopStructureItem->parentArticle = $parentArticleId;
+			$loopStructureItem->tocLevel = $tocLevel;
+			$loopStructureItem->sequence = $sequence;
+			$loopStructureItem->tocNumber = $tocNumber;
+			$loopStructureItem->tocText = $tocText;
 	
-			$this->mStructureItems[$sequence] = $loopStructureItem;
+			$this->structureItems[$sequence] = $loopStructureItem;
 			$sequence++;
 	
 		}
@@ -203,31 +167,33 @@ class LoopStructure {
 				'lsi_toc_number',
 				'lsi_toc_text'
 			),
-			array(),
+			array(
+				'lsi_structure' => $this->id
+			),
 			__METHOD__,
 			array(
 				'ORDER BY' => 'lsi_sequence ASC'
 			)
 		);
-	
+		
 		foreach ( $res as $row ) {
 	
 			if ($row->lsi_toc_level == 0) {
-				$this->setMainPage( $row->lsi_article );
+				$this->mainPage = $row->lsi_article;
 			}
-	
+			
 			$loopStructureItem = new LoopStructureItem();
-			$loopStructureItem->setId( $row->lsi_id );
-			$loopStructureItem->setArticle( $row->lsi_article );
-			$loopStructureItem->setPreviousArticle( $row->lsi_previous_article );
-			$loopStructureItem->setNextArticle( $row->lsi_next_article );
-			$loopStructureItem->setParentArticle( $row->lsi_parent_article );
-			$loopStructureItem->setTocLevel( $row->lsi_toc_level );
-			$loopStructureItem->setSequence( $row->lsi_sequence );
-			$loopStructureItem->setTocNumber( $row->lsi_toc_number );
-			$loopStructureItem->setTocText( $row->lsi_toc_text );
+			$loopStructureItem->id = $row->lsi_id;
+			$loopStructureItem->article = $row->lsi_article;
+			$loopStructureItem->previousArticle = $row->lsi_previous_article;
+			$loopStructureItem->nextArticle = $row->lsi_next_article;
+			$loopStructureItem->parentArticle = $row->lsi_parent_article;
+			$loopStructureItem->tocLevel = $row->lsi_toc_level;
+			$loopStructureItem->sequence = $row->lsi_sequence;
+			$loopStructureItem->tocNumber = $row->lsi_toc_number;
+			$loopStructureItem->tocText = $row->lsi_toc_text;
 	
-			$this->mStructureItems[] = $loopStructureItem;
+			$this->structureItems[] = $loopStructureItem;
 			
 		}
 	}
@@ -236,7 +202,7 @@ class LoopStructure {
 	 * Save items to database
 	 */
 	public function saveItems() {
-		foreach( $this->getStructureItems() as $structureItem ) {
+		foreach( $this->structureItems as $structureItem ) {
 			$structureItem->addToDatabase();
 		}
 	}
@@ -246,9 +212,6 @@ class LoopStructure {
 	 */
 	public function deleteItems() {
 	
-		# check if 
-		$dbr = wfGetDB( DB_SLAVE );
-		
 		$dbw = wfGetDB( DB_MASTER );
 		$dbw->delete(
 			'loop_structure_items',
@@ -256,8 +219,8 @@ class LoopStructure {
 			__METHOD__
 		);
 	
-		if(isset($this->mStructureItems)) {
-			unset($this->mStructureItems);
+		if( isset( $this->structureItems )) {
+			unset( $this->structureItems );
 		}
 		
 		return true;
@@ -268,136 +231,51 @@ class LoopStructure {
 
 /**
  *  Class representing a single page of a LoopStructure
- *
  */
 class LoopStructureItem {
 	
-	private $mId;					// id of the structure item
-	private $mStructure = 0;		// id of the corresponding structure
-	private $mArticle;				// article id of the page
-	
-	private $mPreviousArticle;		// article id from the previous page
-	private $mNextArticle;			// article id from the next page
-	private $mParentArticle;		// article id from the parent page 
-	
-	private $mTocLevel;				// Level within the corresponding structure
-	private $mSequence;				// Sequential number within the corresponding structure
-	private $mTocNumber;			// string rrepresentation of the chapter number
-	private $mTocText;				// page title
+	public $id; // id of the structure item
+	public $structure = 0; // id of the corresponding structure
+	public $article; // article id of the page
+	public $previousArticle; // article id from the previous page
+	public $nextArticle; // article id from the next page
+	public $parentArticle; // article id from the parent page 
+	public $tocLevel; // Level within the corresponding structure
+	public $sequence; // Sequential number within the corresponding structure
+	public $tocNumber; // string rrepresentation of the chapter number
+	public $tocText; // page title
 
 	function __construct() {
 
 	}
-	
-	public function setId( $id ) {
-		$this->mId = $id;
-	}
-	
-	public function setStructure( $loopStructureId ) {
-		$this->mStructure = $loopStructureId;
-	}
-	
-	public function setArticle( $articleId ) {
-		$this->mArticle = $articleId;
-	}
-	
-	public function setParentArticle( $articleId ) {
-		$this->mParentArticle = $articleId;
-	}
-	
-	public function setPreviousArticle( $articleId ) {
-		$this->mPreviousArticle = $articleId;
-	}
-	
-	public function setNextArticle( $articleId ) {
-		$this->mNextArticle = $articleId;
-	}
-	
-	public function setTocLevel( $tocLevel ) {
-		$this->mTocLevel = $tocLevel;
-	}
-	
-	public function setSequence( $sequence ) {
-		$this->mSequence = $sequence;
-	}
-	
-	public function setTocNumber( $tocNumber ) {
-		$this->mTocNumber = $tocNumber;
-	}
-	
-	public function setTocText( $tocText ) {
-		$this->mTocText = $tocText;
-	}
-	
-	public function getId() {
-		return $this->mId;
-	}
-	
-	public function getStructure() {
-		return $this->mStructure;
-	}
-	
-	public function getArticle() {
-		return $this->mArticle;
-	}
-	
-	public function getParentArticle() {
-		return $this->mParentArticle;
-	}
-	
-	public function getPreviousArticle() {
-		return $this->mPreviousArticle;
-	}
-	
-	public function getNextArticle() {
-		return $this->mNextArticle;
-	}
-	
-	public function getTocLevel() {
-		return $this->mTocLevel;
-	}
-	
-	public function getSequence() {
-		return $this->mSequence;
-	}
-	
-	public function getTocNumber() {
-		return $this->mTocNumber;
-	}
-	
-	public function getTocText() {
-		return $this->mTocText;
-	}
-	
+
 	/**
 	 * Add structure item to the database
 	 * @return bool true
 	 */
 	function addToDatabase() {
 		
-		if ($this->mArticle!=0) {
+		if ($this->article!=0) {
 			
 			$dbw = wfGetDB( DB_MASTER );
-			$this->setId( $dbw->nextSequenceValue( 'LoopStructureItem_id_seq' ));
+			$this->id = $dbw->nextSequenceValue( 'LoopStructureItem_id_seq' );
 			
 			$dbw->insert(
 				'loop_structure_items',
 				array(
-					'lsi_id' => $this->getId(),
-					'lsi_article' => $this->getArticle(),
-					'lsi_previous_article' => $this->getPreviousArticle(),
-					'lsi_next_article' => $this->getNextArticle(),
-					'lsi_parent_article' => $this->getParentArticle(),
-					'lsi_toc_level' => $this->getTocLevel(),
-					'lsi_sequence' => $this->getSequence(),
-					'lsi_toc_number' => $this->getTocNumber(),
-					'lsi_toc_text' => $this->getTocText()
+					'lsi_id' => $this->id,
+					'lsi_article' => $this->article,
+					'lsi_previous_article' => $this->previousArticle,
+					'lsi_next_article' => $this->nextArticle,
+					'lsi_parent_article' => $this->parentArticle,
+					'lsi_toc_level' => $this->tocLevel,
+					'lsi_sequence' => $this->sequence,
+					'lsi_toc_number' => $this->tocNumber,
+					'lsi_toc_text' => $this->tocText
 				),
 				__METHOD__
 			);
-			
-			$this->mId = $dbw->insertId();
-			
+			$this->id = $dbw->insertId();
 		}
 		
 		return true;
@@ -439,15 +317,15 @@ class LoopStructureItem {
 		if( $row = $res->fetchObject() ) {
 	
 			$loopStructureItem = new LoopStructureItem();
-			$loopStructureItem->setId( $row->lsi_id );
-			$loopStructureItem->setArticle( $row->lsi_article );
-			$loopStructureItem->setPreviousArticle( $row->lsi_previous_article );
-			$loopStructureItem->setNextArticle( $row->lsi_next_article );
-			$loopStructureItem->setParentArticle( $row->lsi_parent_article );
-			$loopStructureItem->setTocLevel( $row->lsi_toc_level );
-			$loopStructureItem->setSequence( $row->lsi_sequence );
-			$loopStructureItem->setTocNumber( $row->lsi_toc_number );
-			$loopStructureItem->setTocText( $row->lsi_toc_text );
+			$loopStructureItem->id = $row->lsi_id;
+			$loopStructureItem->article = $row->lsi_article;
+			$loopStructureItem->previousArticle = $row->lsi_previous_article;
+			$loopStructureItem->nextArticle = $row->lsi_next_article;
+			$loopStructureItem->parentArticle = $row->lsi_parent_article;
+			$loopStructureItem->tocLevel = $row->lsi_toc_level;
+			$loopStructureItem->sequence = $row->lsi_sequence;
+			$loopStructureItem->tocNumber = $row->lsi_toc_number;
+			$loopStructureItem->tocText = $row->lsi_toc_text;
 				
 			return $loopStructureItem;
 				
