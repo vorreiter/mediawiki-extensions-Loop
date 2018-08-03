@@ -16,5 +16,7 @@
 	"loopstructure-save-equal-error": "No change could be detected.",
 	"loopstructure-save-parsed-structure-error": "An error occurred during the save process.",
 	"loopstructure-save-parse-error": "The format of the table of contents is invalid.",
-	"loopstructure-save-success": "The table of contents has been updated successfully."
+	"loopstructure-save-success": "The table of contents has been updated successfully.",
+	"submit": "Save",
+	"loopstructure-default-newpage-content": "This is a new page."
 }

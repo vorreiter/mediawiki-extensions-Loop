@@ -17,5 +17,7 @@
 	"loopstructure-save-equal-error": "Es konnte keine Änderung festgestellt werden.",
 	"loopstructure-save-parsed-structure-error": "Es ist ein Fehler während des Speichervorgangs aufgetreten.",
 	"loopstructure-save-parse-error": "Das Format des Inhaltsverzeichnises ist ungültig.",
-	"loopstructure-save-success": "Das Inhaltsverzeichnis wurde erfolgreich aktualisiert"
+	"loopstructure-save-success": "Das Inhaltsverzeichnis wurde erfolgreich aktualisiert",
+	"submit": "Speichern",
+	"loopstructure-default-newpage-content": "Dies ist eine neu erstellte Seite."
 }

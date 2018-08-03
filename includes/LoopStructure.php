@@ -51,9 +51,19 @@ class LoopStructure {
 		$regex = "/(<a )(.*?)(>)(.*?)(<\\/a>)/";
 		preg_match($regex, $wikiText, $matches);
 		$rootTitleText = $matches[4];
-		$rootTitle = Title::newFromText($rootTitleText);
-		$this->mainPage = $rootTitle->getArticleID();
-		
+
+		# Title objects has to start with a letter else an error will occur.
+		if( ctype_alpha( $rootTitleText[0] )) {
+            $rootTitle = Title::newFromText( $rootTitleText );
+            if( is_object( $rootTitle )) {
+                $this->mainPage = $rootTitle->getArticleID();
+            } else {
+                return false;
+            }
+        } else {
+		    return false;
+        }
+
 		# create new root page
 		if( $this->mainPage == 0 ) {
 			$newPage = WikiPage::factory( Title::newFromText( $rootTitleText ));

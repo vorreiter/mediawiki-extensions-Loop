@@ -17,5 +17,6 @@
 	"loopstructure-save-equal-error": "Error message when the user saves a unchanged structure",
 	"loopstructure-save-parsed-structure-error": "Error message occurs when the parsed structure content is empty",
 	"loopstructure-save-parse-error": "Parse error for the loop strucutre",
-	"loopstructure-save-success": "Saving succes of the loop structure"
+	"loopstructure-save-success": "Saving succes of the loop structure",
+	"loopstructure-default-newpage-content": "Standard content for new pages"
 }
