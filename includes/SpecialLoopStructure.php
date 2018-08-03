@@ -20,13 +20,14 @@ class SpecialLoopStructure extends SpecialPage {
 		$out = $this->getOutput();
 		$out->setPageTitle( $this->msg( 'loopstructure-specialpage-title' ) );
 		
-		$saltedToken = $user->getEditToken( $wgSecretKey );
+
 		
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadItems();
 		$currentStructureAsWikiText = $loopStructure->getStructureItemsAsWikiText();
-		
-		$request = $this->getRequest();
+
+        $request = $this->getRequest();
+        $saltedToken = $user->getEditToken( $wgSecretKey, $request );
 		$newStructureContent = $request->getText( 'loopstructure-content' );
 		$requestToken = $request->getText( 't' );
 		
@@ -36,7 +37,7 @@ class SpecialLoopStructure extends SpecialPage {
 
 			if( ! $user->isAnon() && $user->isAllowed( 'loop-toc-edit' )) {
 				
-				if( $user->matchEditToken( $requestToken, $wgSecretKey )) {
+				if( $user->matchEditToken( $requestToken, $wgSecretKey, $request )) {
 					
 					# the content was changend
 					# use local parser to get a default parsed result
