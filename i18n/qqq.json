@@ -1,14 +1,21 @@
 {
 	"@metadata": {
 		"authors": [
-			"Marc Vorreiter"
+			"Marc Vorreiter",
+			"Kevin Berg"
 		]
 	},
 	"loop-extensionname": "LOOP",
 	"loop-desc": "{{desc|name=LOOP|url=https://github.com/oncampus/mediawiki-extensions-Loop}}",
 	"loop-tracking-category-error": "Name of the Loop default error tracking category",
 	"loop-tracking-category-error-desc": "Description of the Loop default error tracking category",
+	"loop-token-error": "Error message when the users edit token is invalid",
+	"loop-permission-error": "Error message, user has no permission",
 	"specialpages-group-loop" : "name of the special pages category for loop",
 	"loopstructure-specialpage-title" : "Page title for Loop Structure special page",
-	"loopstructure" : "Name of the loop structure special page in special:specialpages"
+	"loopstructure" : "Name of the loop structure special page in special:specialpages",
+	"loopstructure-save-equal-error": "Error message when the user saves a unchanged structure",
+	"loopstructure-save-parsed-structure-error": "Error message occurs when the parsed structure content is empty",
+	"loopstructure-save-parse-error": "Parse error for the loop strucutre",
+	"loopstructure-save-success": "Saving succes of the loop structure"
 }

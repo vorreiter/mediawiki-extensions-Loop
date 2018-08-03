@@ -13,14 +13,14 @@ class SpecialLoopStructure extends SpecialPage {
 
 	public function execute($sub) {
 		
-		global $wgUser, $wgSecretKey;
-		$user = $wgUser; # TODO find another way to get the user
+		global $wgSecretKey;
 		
+		$user = $this->getUser();
 		$this->setHeaders();
 		$out = $this->getOutput();
 		$out->setPageTitle( $this->msg( 'loopstructure-specialpage-title' ) );
 		
-		$saltedToken = $wgUser->getEditToken( $wgSecretKey );
+		$saltedToken = $user->getEditToken( $wgSecretKey );
 		
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadItems();
@@ -34,7 +34,7 @@ class SpecialLoopStructure extends SpecialPage {
 		
 		if( ! empty( $newStructureContent ) && ! empty( $requestToken )) {
 
-			if( ! $user->isAnon() ) {
+			if( ! $user->isAnon() && $user->isAllowed( 'loop-toc-edit' )) {
 				
 				if( $user->matchEditToken( $requestToken, $wgSecretKey )) {
 					
@@ -85,7 +85,7 @@ class SpecialLoopStructure extends SpecialPage {
 				}
 
 			} else {
-				$error = $this->msg( 'loop-login-required' )->parse();
+				$error = $this->msg( 'loop-permission-error' )->parse();
 			}
 			
 		}
