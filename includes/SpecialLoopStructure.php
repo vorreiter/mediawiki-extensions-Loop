@@ -42,11 +42,13 @@ class SpecialLoopStructure extends SpecialPage {
 		$newStructureContent = $request->getText( 'loopstructure-content' );
 		$requestToken = $request->getText( 't' );
 
+		$userIsPermitted = (! $user->isAnon() && $user->isAllowed( 'loop-toc-edit' ));
+		
 		$error = false;
 		$feedbackMessageClass = 'success';
 
 		if( ! empty( $newStructureContent ) && ! empty( $requestToken )) {
-			if( ! $user->isAnon() && $user->isAllowed( 'loop-toc-edit' )) {
+			if( $userIsPermitted ) {
 				if( $user->matchEditToken( $requestToken, $wgSecretKey, $request )) {
 
 					# the content was changend
@@ -133,52 +135,74 @@ class SpecialLoopStructure extends SpecialPage {
                 )
             );
         }
+        
+        if( $userIsPermitted ) {
+        	
+        	# user is permitted to edit the toc, print edit form here
+        	
+	        $out->addHTML(
+	            Html::openElement(
+	                'form',
+	                array(
+	                    'class' => 'mw-editform mt-3 mb-3',
+	                    'id' => 'loopstructure-form',
+	                    'method' => 'post',
+	                    'enctype' => 'multipart/form-data'
+	                )
+	            )
+	            . Html::rawElement(
+	                'textarea',
+	                array(
+	                    'name' => 'loopstructure-content',
+	                    'id' => 'loopstructure-textarea',
+	                    'tabindex' => ++$tabindex,
+	                    'class' => 'd-block mt-3',
+	                    '',
+	                    'style' => 'width: 700px; height: 700px;' # TODO set size in skin, remove it from here later
+	                ),
+	                $currentStructureAsWikiText
+	            )
+	            . Html::rawElement(
+	                'input',
+	                array(
+	                    'type' => 'hidden',
+	                    'name' => 't',
+	                    'id' => 'loopstructure-token',
+	                    'value' => $saltedToken
+	                )
+	            )
+	            . Html::rawElement(
+	                'input',
+	                array(
+	                    'type' => 'submit',
+	                    'tabindex' => ++$tabindex,
+	                    'class' => 'btn btn-primary mt-3',
+	                    'id' => 'loopstructure-submit',
+	                    'value' => $this->msg( 'submit' )->parse()
+	                )
+	            )
+	            . Html::closeElement(
+	                'form'
+	            )
+	        );
+	        
+        } else {
 
-        # begin the input form
-        $out->addHTML(
-            Html::openElement(
-                'form',
-                array(
-                    'class' => 'mw-editform mt-3 mb-3',
-                    'id' => 'loopstructure-form',
-                    'method' => 'post',
-                    'enctype' => 'multipart/form-data'
-                )
-            )
-            . Html::rawElement(
-                'textarea',
-                array(
-                    'name' => 'loopstructure-content',
-                    'id' => 'loopstructure-textarea',
-                    'tabindex' => ++$tabindex,
-                    'class' => 'd-block mt-3',
-                    'style' => 'width: 700px; height: 700px;' # TODO set size in skin, remove it from here later
-                ),
-                $currentStructureAsWikiText
-            )
-            . Html::rawElement(
-                'input',
-                array(
-                    'type' => 'hidden',
-                    'name' => 't',
-                    'id' => 'loopstructure-token',
-                    'value' => $saltedToken
-                )
-            )
-            . Html::rawElement(
-                'input',
-                array(
-                    'type' => 'submit',
-                    'tabindex' => ++$tabindex,
-                    'class' => 'btn btn-primary mt-3',
-                    'id' => 'loopstructure-submit',
-                    'value' => $this->msg( 'submit' )->parse()
-                )
-            )
-            . Html::closeElement(
-                'form'
-            )
-        );
+        	# user has no permission, just show content without textarea
+        	
+        	$out->addHtml(
+        		Html::rawElement(
+        			'div',
+        			array(
+        				'class' => 'alert alert-dark',
+        				'role' => 'alert',
+        				'style' => 'white-space: pre;'
+        			),
+        			$currentStructureAsWikiText
+        		)
+        	);
+
+        }
 
 	}
 
@@ -191,6 +215,3 @@ class SpecialLoopStructure extends SpecialPage {
 		return 'loop';
 	}
 }
-
-
-
