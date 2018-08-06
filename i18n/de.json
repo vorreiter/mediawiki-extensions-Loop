@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Marc Vorreiter"
+			"Marc Vorreiter",
+			"Kevin Berg"
 		]
 	},
 	"loop-extensionname": "LOOP",
@@ -10,5 +11,13 @@
 	"loop-tracking-category-error-desc": "Seiten mit LOOP spezifischen Fehlern.",
 	"specialpages-group-loop" : "LOOP",
 	"loopstructure-specialpage-title" : "Inhaltsverzeichnis",
-	"loopstructure" : "Inhaltsverzeichnis"
+	"loopstructure" : "Inhaltsverzeichnis",
+	"loop-token-error": "Der User Token ist ungültig.",
+	"loop-permission-error": "Sie verügen nicht über genügend Rechte, um die gewünschte Aktion durchzuführen.",
+	"loopstructure-save-equal-error": "Es konnte keine Änderung festgestellt werden.",
+	"loopstructure-save-parsed-structure-error": "Es ist ein Fehler während des Speichervorgangs aufgetreten.",
+	"loopstructure-save-parse-error": "Das Format des Inhaltsverzeichnises ist ungültig.",
+	"loopstructure-save-success": "Das Inhaltsverzeichnis wurde erfolgreich aktualisiert",
+	"submit": "Speichern",
+	"loopstructure-default-newpage-content": "Dies ist eine neu erstellte Seite."
 }
