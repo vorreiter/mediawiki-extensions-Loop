@@ -37,6 +37,27 @@ class SpecialLoopStructure extends SpecialPage {
 
 		if( ! $user->isAnon() && $user->isAllowed( 'loop-toc-edit' ) ) {
 			
+			# show link to the edit page if user is permitted
+			
+			$out->addHtml(
+				Html::openElement(
+					'div',
+					array(
+						'class' => 'mt-3 mb-3'
+					)
+				)
+				. Html::rawElement(
+					'a',
+					array(
+						'href' => Title::newFromText( 'Special:LoopStructureEdit' )->getFullURL()
+					),
+					$this->msg( 'loopstructure-edit-specialpage-title' )
+				)
+				. Html::closeElement(
+					'div'
+				)
+			);
+			
 		}
 		
 	}
