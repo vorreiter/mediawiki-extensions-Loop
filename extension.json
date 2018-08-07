@@ -37,6 +37,29 @@
 	"TrackingCategories": [
 		"loop-tracking-category-error"
 	],
+	"GroupPermissions": {
+		"*": {
+			"loop-toc-edit": false
+		},
+		"user": {
+			"loop-toc-edit": false
+		},
+		"autoconfirmed": {
+			"loop-toc-edit": false
+		},
+		"bot": {
+			"loop-toc-edit": false
+		},
+		"bureaucrat": {
+			"loop-toc-edit": true
+		},
+		"sysop": {
+			"loop-toc-edit": true
+		}
+	},
+	"AvailableRights": [
+		"loop-toc-edit"
+	],
 	"MessagesDirs": {
 		"Loop": [
 			"i18n"
