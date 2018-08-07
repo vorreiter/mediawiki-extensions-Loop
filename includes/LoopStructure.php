@@ -8,23 +8,50 @@
 class LoopStructure {
 	
 	private $id = 0; // id of the structure
-	private $mainPage; // article id of the main page
-	private $structureItems = array(); // array of structure items
 	private $properties = array(); // array of structure properties
 	private $propertiesLoaded = false; // bool properties loaded from database
-	
-	function __construct() {
+	public $mainPage; // article id of the main page
+	public $structureItems = array(); // array of structure items
+
+	public function render() {
 		
-	}
-	
-	public function getStructureItems() {
-		return $this->structureItems;
+		$text = '';
+		
+		foreach( $this->structureItems as $structureItem ) {
+
+			if( intval( $structureItem->tocLevel ) === 0 ) {
+				
+				$text .= '<h2>'.$structureItem->tocText.'</h2>';
+				
+			} else {
+
+				if( isset( $structureItem->tocLevel ) && $structureItem->tocLevel > 0 ) {
+					$tabLevel = $structureItem->tocLevel;
+				} else {
+					$tabLevel = 1;
+				}
+				
+				$link = Linker::link(
+					Title::newFromID( $structureItem->article ),
+					$structureItem->tocNumber .' '. $structureItem->tocText,
+					array(),
+					array()
+				); 
+				
+				$text .= '<div class="loopstructure-level-'.$structureItem->tocLevel.'">' . str_repeat('	',  $tabLevel ) . $link . '</div>';
+			
+			}
+				
+		}
+		
+		return $text;
+		
 	}
 	
 	/**
 	 * Converts the structureitems to the table of contents as wikitext.
 	 */
-	public function getStructureItemsAsWikiText() {
+	public function renderAsWikiText() {
 		
 		$wikiText = '';
 
@@ -155,10 +182,14 @@ class LoopStructure {
 	
 	}
 	
+	public function getStructureItems() {
+		return $this->structureItems;
+	}
+	
 	/**
 	 * Load items from database
 	 */
-	public function loadItems() {
+	public function loadStructureItems() {
 	
 		$dbr = wfGetDB( DB_SLAVE );
 		
@@ -253,10 +284,6 @@ class LoopStructureItem {
 	public $tocNumber; // string rrepresentation of the chapter number
 	public $tocText; // page title
 
-	function __construct() {
-
-	}
-
 	/**
 	 * Add structure item to the database
 	 * @return bool true
@@ -289,15 +316,14 @@ class LoopStructureItem {
 		return true;
 		
 	}
-	
-	
+
 	/**
 	 * Get item for given article and structure from database
 	 *
 	 * @param int $articleId
 	 * @param int $structure
 	 */
-	public static function newFromIds($article) {
+	public static function newFromIds( $article ) {
 	
 		$dbr = wfGetDB( DB_SLAVE );
 		$res = $dbr->select(
@@ -343,5 +369,74 @@ class LoopStructureItem {
 				
 		}
 	
+	}
+	
+	public function getPreviousChapterItem () {
+		
+		$dbr = wfGetDB( DB_SLAVE );
+		$prev_id =  $dbr->selectField(
+			'loop_structure_items',
+			'lsi_article',
+			array(
+				0 => "lsi_sequence < '".$this->sequence."'",
+				1 => "lsi_structure = '".$this->structure."'",
+				2 => "lsi_toc_level = 1"
+			),
+			__METHOD__,
+			array(
+				'ORDER BY' => 'lsi_sequence DESC'
+			)
+		);
+		
+		if( ! empty( $prev_id )) {
+			return LoopStructureItem::newFromIds( $prev_id );
+		} else {
+			return false;
+		}
+		
+	}
+	
+	public function getNextChapterItem () {
+		
+		$dbr = wfGetDB( DB_SLAVE );
+		$prev_id =  $dbr->selectField(
+			'loop_structure_items',
+			'lsi_article',
+			array(
+				0 => "lsi_sequence > '".$this->sequence."'",
+				1 => "lsi_toc_level = 1"
+			),
+			__METHOD__,
+			array(
+				'ORDER BY' => 'lsi_sequence ASC'
+			)
+		);
+		
+		if( ! empty( $prev_id ) ) {
+			return LoopStructureItem::newFromIds( $prev_id );
+		} else {
+			return false;
+		}
+		
+	}
+	
+	public function getPreviousItem () {
+		
+		if( isset( $this->previousArticle ) ) {
+			return LoopStructureItem::newFromIds( $this->previousArticle );
+		} else {
+			return false;
+		}
+		
+	}
+	
+	public function getNextItem () {
+		
+		if( isset( $this->nextArticle ) ) {
+			return LoopStructureItem::newFromIds( $this->nextArticle );
+		} else {
+			return false;
+		}
+		
 	}
 }

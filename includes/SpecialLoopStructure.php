@@ -1,24 +1,67 @@
 <?php
 
-
-/**
- *  Special page representing the table of contents
- */
- 
 class SpecialLoopStructure extends SpecialPage {
 	
 	public function __construct() {
 		parent::__construct( 'LoopStructure' );
 	}
+	
+	public function execute( $sub ) {
+		
+		$user = $this->getUser();
+		$this->setHeaders();
+		$out = $this->getOutput();
+		$out->setPageTitle( $this->msg( 'loopstructure-specialpage-title' ) );
+		
+		$loopStructure = new LoopStructure();
+		$loopStructure->loadStructureItems();
 
-	public function execute($sub) {
+		$out->addHtml(
+		
+			Html::rawElement(
+				'h1',
+				array(
+					'id' => 'loopstructure-h1'
+				),
+				$this->msg( 'loopstructure-specialpage-title' )->parse()
+			)
+			. Html::rawElement(
+				'div',
+				array(
+					'style' => 'white-space: pre;'
+				),
+				$loopStructure->render()
+			)
+			
+		);
+
+		if( ! $user->isAnon() && $user->isAllowed( 'loop-toc-edit' ) ) {
+			
+		}
+		
+	}
+	
+}
+
+
+/**
+ *  Special page representing the table of contents
+ */
+ 
+class SpecialLoopStructureEdit extends SpecialPage {
+	
+	public function __construct() {
+		parent::__construct( 'LoopStructureEdit' );
+	}
+
+	public function execute( $sub ) {
 		
 		global $wgSecretKey;
 		
 		$user = $this->getUser();
 		$this->setHeaders();
 		$out = $this->getOutput();
-		$out->setPageTitle( $this->msg( 'loopstructure-specialpage-title' ) );
+		$out->setPageTitle( $this->msg( 'loopstructure-edit-specialpage-title' ) );
 
 		$tabindex = 0;
 
@@ -29,14 +72,14 @@ class SpecialLoopStructure extends SpecialPage {
                 array(
                     'id' => 'loopstructure-h1'
                 ),
-                $this->msg( 'loopstructure-specialpage-title' )->parse()
+                $this->msg( 'loopstructure-edit-specialpage-title' )->parse()
             )
         );
 
 		$loopStructure = new LoopStructure();
-		$loopStructure->loadItems();
-		$currentStructureAsWikiText = $loopStructure->getStructureItemsAsWikiText();
-
+		$loopStructure->loadStructureItems();
+		$currentStructureAsWikiText = $loopStructure->renderAsWikiText();
+		
         $request = $this->getRequest();
         $saltedToken = $user->getEditToken( $wgSecretKey, $request );
 		$newStructureContent = $request->getText( 'loopstructure-content' );
@@ -68,7 +111,7 @@ class SpecialLoopStructure extends SpecialPage {
 
 							if( $parseResult !== false ) {
 
-                                $newStructureContentParsedWikiText = $tmpLoopStructure->getStructureItemsAsWikiText();
+                                $newStructureContentParsedWikiText = $tmpLoopStructure->renderAsWikiText();
 
                                 # if new parsed structure is different to the new one save it
                                 if( $currentStructureAsWikiText != $newStructureContentParsedWikiText ) {
@@ -76,7 +119,7 @@ class SpecialLoopStructure extends SpecialPage {
                                     $loopStructure->deleteItems();
                                     $loopStructure->setStructureItemsFromWikiText( $parsedStructure, $user );
                                     $loopStructure->saveItems();
-                                    $currentStructureAsWikiText = $loopStructure->getStructureItemsAsWikiText();
+                                    $currentStructureAsWikiText = $loopStructure->renderAsWikiText();
 
                                     # save success output
                                     $out->addHtml(
@@ -180,8 +223,7 @@ class SpecialLoopStructure extends SpecialPage {
 	                    'id' => 'loopstructure-submit',
 	                    'value' => $this->msg( 'submit' )->parse()
 	                )
-	            )
-	            . Html::closeElement(
+	            ) . Html::closeElement(
 	                'form'
 	            )
 	        );
