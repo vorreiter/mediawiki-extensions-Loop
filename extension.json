@@ -20,7 +20,8 @@
 		"LoopUpdater": "schema/LoopUpdater.php",
 		"LoopStructure": "includes/LoopStructure.php",
 		"LoopStructureItem": "includes/LoopStructure.php",
-		"SpecialLoopStructure": "includes/SpecialLoopStructure.php"		
+		"SpecialLoopStructure": "includes/SpecialLoopStructure.php",
+		"SpecialLoopStructureEdit": "includes/SpecialLoopStructure.php"		
 	},
 	"Hooks": {
 		"LoadExtensionSchemaUpdates":[
@@ -28,7 +29,8 @@
 		]
 	},
 	"SpecialPages": {
-		"LoopStructure": "SpecialLoopStructure"
+		"LoopStructure": "SpecialLoopStructure",
+		"LoopStructureEdit": "SpecialLoopStructureEdit"
 	},		
 	"ResourceFileModulePaths": {
 		"localBasePath": "resources",
