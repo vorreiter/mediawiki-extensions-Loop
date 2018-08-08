@@ -18,7 +18,7 @@ class LoopStructure {
 		$text = '';
 		
 		foreach( $this->structureItems as $structureItem ) {
-
+			
 			if( intval( $structureItem->tocLevel ) === 0 ) {
 				
 				$text .= '<h2>'.$structureItem->tocText.'</h2>';
@@ -489,6 +489,30 @@ class LoopStructureItem {
 		$breadcrumb = '<ol class="breadcrumb" id="breadcrumb">' . $breadcrumb . '</ol>';
 		return $breadcrumb;
 		
+	}
+	
+	public function lastChanged() {
+		
+		$dbr = wfGetDB( DB_SLAVE );
+		$last_touched  =  $dbr->selectField(
+			array(
+				'loop_structure_items',
+				'page'
+			),
+			'max( page_touched )',
+			array(
+				0 => "page_id = lsi_article",
+				1 => "lsi_article = '".$this->article."'"
+			),
+			__METHOD__
+		);
+		
+		if( ! empty( $last_touched )) {
+			return $last_touched;
+		} else {
+			return false;
+		}
+	
 	}
 	
 }
