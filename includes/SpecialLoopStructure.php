@@ -62,6 +62,15 @@ class SpecialLoopStructure extends SpecialPage {
 		
 	}
 	
+	/**
+	 * Specify the specialpages-group loop
+	 *
+	 * @return string
+	 */
+	protected function getGroupName() {
+		return 'loop';
+	}
+	
 }
 
 

@@ -33,9 +33,7 @@ class LoopStructure {
 				
 				$link = Linker::link(
 					Title::newFromID( $structureItem->article ),
-					$structureItem->tocNumber .' '. $structureItem->tocText,
-					array(),
-					array()
+					$structureItem->tocNumber .' '. $structureItem->tocText
 				); 
 				
 				$text .= '<div class="loopstructure-level-'.$structureItem->tocLevel.'">' . str_repeat('	',  $tabLevel ) . $link . '</div>';
@@ -399,7 +397,7 @@ class LoopStructureItem {
 	public function getNextChapterItem () {
 		
 		$dbr = wfGetDB( DB_SLAVE );
-		$prev_id =  $dbr->selectField(
+		$next_id = $dbr->selectField(
 			'loop_structure_items',
 			'lsi_article',
 			array(
@@ -412,8 +410,8 @@ class LoopStructureItem {
 			)
 		);
 		
-		if( ! empty( $prev_id ) ) {
-			return LoopStructureItem::newFromIds( $prev_id );
+		if( ! empty( $next_id ) ) {
+			return LoopStructureItem::newFromIds( $next_id );
 		} else {
 			return false;
 		}
@@ -439,4 +437,58 @@ class LoopStructureItem {
 		}
 		
 	}
+	
+	public function getParentItem () {
+		
+		if( isset( $this->parentArticle ) ) {
+			return LoopStructureItem::newFromIds( $this->parentArticle );
+		} else {
+			return false;
+		}
+		
+	}
+	
+	public function getBreadcrumb ( $max_len = 100 ) {
+	
+		$breadcrumb = '<li class="active">' . $this->tocNumber . ' ' . $this->tocText .'</li>';
+		$len = strlen( $this->tocNumber ) + strlen( $this->tocText ) + 1;
+		$level = $this->tocLevel;
+	
+		$items = array();
+		$item = $this->getParentItem();
+		$toc_number_len = 0;
+		
+		while( $item !== false ) {
+			$items[] = $item;
+			$toc_number_len = $toc_number_len + strlen ( $item->tocNumber ) + 1;
+			$item = $item->getParentItem();
+		}
+	
+		$max_text_len = $max_len - $len - $toc_number_len;
+		
+		if ( $level == 0 ) {	
+			$level = 1;
+		}
+		
+		$max_item_text_len = floor( $max_text_len / $level );
+	
+		foreach( $items as $item ) {
+				
+			if( strlen( $item->tocText ) > $max_item_text_len ) {
+				$link_text = mb_substr( $item->tocText, 0, ( $max_item_text_len - 2 ) ) . '..';
+			} else {
+				$link_text = $item->tocText;
+			}
+			
+			$title = Title::newFromID( $item->article );
+			$link = Linker::link( $title, $item->tocNumber .' '. $link_text );
+			$breadcrumb = '<li>' . $link .'</li>' . $breadcrumb;
+			
+		}
+	
+		$breadcrumb = '<ol class="breadcrumb" id="breadcrumb">' . $breadcrumb . '</ol>';
+		return $breadcrumb;
+		
+	}
+	
 }
