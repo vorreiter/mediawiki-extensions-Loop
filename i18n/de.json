@@ -21,5 +21,15 @@
 	"loopstructure-save-parse-error": "Das Format des Inhaltsverzeichnises ist ungültig.",
 	"loopstructure-save-success": "Das Inhaltsverzeichnis wurde erfolgreich aktualisiert",
 	"submit": "Speichern",
-	"loopstructure-default-newpage-content": "Dies ist eine neu erstellte Seite."
+	"loopstructure-default-newpage-content": "Dies ist eine neu erstellte Seite.",
+		
+	"loopexport-specialpage-title" : "Export",
+	"loopexport": "Export",
+	
+	"right-loop-toc-edit": "Inhaltsverzeichnis bearbeiten",
+	"right-loop-export-pdf": "Export LOOP als PDF",
+	"right-loop-export-xml": "Export LOOP als XML",
+	"right-loop-export-mp3": "Export LOOP als MP3",
+	"right-loop-export-epub": "Export LOOP als ePub",
+	"right-loop-export-html": "Export LOOP als Offline HTML"
 }

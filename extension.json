@@ -21,7 +21,14 @@
 		"LoopStructure": "includes/LoopStructure.php",
 		"LoopStructureItem": "includes/LoopStructure.php",
 		"SpecialLoopStructure": "includes/SpecialLoopStructure.php",
-		"SpecialLoopStructureEdit": "includes/SpecialLoopStructure.php"		
+		"SpecialLoopStructureEdit": "includes/SpecialLoopStructure.php",
+		"LoopExport": "includes/LoopExport.php",
+		"LoopExportPdf": "includes/LoopExport.php",
+		"LoopExportXml": "includes/LoopExport.php",
+		"LoopExportMp3": "includes/LoopExport.php",
+		"LoopExportEpub": "includes/LoopExport.php",
+		"LoopExportHtml": "includes/LoopExport.php",
+		"SpecialLoopExport": "includes/SpecialLoopExport.php"		
 	},
 	"Hooks": {
 		"LoadExtensionSchemaUpdates":[
@@ -30,7 +37,8 @@
 	},
 	"SpecialPages": {
 		"LoopStructure": "SpecialLoopStructure",
-		"LoopStructureEdit": "SpecialLoopStructureEdit"
+		"LoopStructureEdit": "SpecialLoopStructureEdit",
+		"LoopExport": "SpecialLoopExport"
 	},		
 	"ResourceFileModulePaths": {
 		"localBasePath": "resources",
@@ -41,26 +49,61 @@
 	],
 	"GroupPermissions": {
 		"*": {
-			"loop-toc-edit": false
+			"loop-toc-edit": false,
+			"loop-export-pdf": false,
+			"loop-export-xml": false,
+			"loop-export-mp3": false,
+			"loop-export-epub": false,
+			"loop-export-html": false
 		},
 		"user": {
-			"loop-toc-edit": false
+			"loop-toc-edit": false,
+			"loop-export-pdf": true,
+			"loop-export-xml": true,
+			"loop-export-mp3": true,
+			"loop-export-epub": true,
+			"loop-export-html": false	
 		},
 		"autoconfirmed": {
-			"loop-toc-edit": false
+			"loop-toc-edit": false,
+			"loop-export-pdf": true,
+			"loop-export-xml": true,
+			"loop-export-mp3": true,
+			"loop-export-epub": true,
+			"loop-export-html": false
 		},
 		"bot": {
-			"loop-toc-edit": false
+			"loop-toc-edit": true,
+			"loop-export-pdf": true,
+			"loop-export-xml": true,
+			"loop-export-mp3": true,
+			"loop-export-epub": true,
+			"loop-export-html": false
 		},
 		"bureaucrat": {
-			"loop-toc-edit": true
-		},
+			"loop-toc-edit": true,
+			"loop-export-pdf": true,
+			"loop-export-xml": true,
+			"loop-export-mp3": true,
+			"loop-export-epub": true,
+			"loop-export-html": true
+		},		
 		"sysop": {
-			"loop-toc-edit": true
+			"loop-toc-edit": true,
+			"loop-export-pdf": true,
+			"loop-export-xml": true,
+			"loop-export-mp3": true,
+			"loop-export-epub": true,
+			"loop-export-html": true
 		}
-	},
+	},	
 	"AvailableRights": [
-		"loop-toc-edit"
+		"loop-toc-edit",
+		"loop-export-pdf",
+		"loop-export-xml",
+		"loop-export-mp3",
+		"loop-export-epub",
+		"loop-export-html"
 	],
 	"MessagesDirs": {
 		"Loop": [

@@ -20,5 +20,15 @@
 	"loopstructure-save-parsed-structure-error": "Error message occurs when the parsed structure content is empty",
 	"loopstructure-save-parse-error": "Parse error for the loop strucutre",
 	"loopstructure-save-success": "Saving succes of the loop structure",
-	"loopstructure-default-newpage-content": "Standard content for new pages"
+	"loopstructure-default-newpage-content": "Standard content for new pages",
+	
+	"loopexport-specialpage-title" : "Page title for Loop Export special page",
+	"loopexport": "Name of Specialpage Export in List of Specialpages",
+	
+	"right-loop-toc-edit": "Right to edit toc",
+	"right-loop-export-pdf": "Right to export LOOP as PDF",
+	"right-loop-export-xml": "Right to export LOOP as XML",
+	"right-loop-export-mp3": "Right to export LOOP as MP3",
+	"right-loop-export-epub": "Right to export LOOP as ePub",
+	"right-loop-export-html": "Right to export LOOP as Offline HTML"
 }
