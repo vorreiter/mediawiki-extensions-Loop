@@ -13,6 +13,16 @@ class LoopStructure {
 	public $mainPage; // article id of the main page
 	public $structureItems = array(); // array of structure items
 
+	
+	public function LoopStructure() {
+		$this->id = 0;
+	}
+
+	
+	public function getId() {
+		return $this->id;
+	}
+	
 	public function render() {
 		
 		$text = '';
@@ -263,6 +273,32 @@ class LoopStructure {
 		return true;
 
 	}
+	
+	
+	public function lastChanged() {
+		$dbr = wfGetDB( DB_SLAVE );
+		$last_touched  =  $dbr->selectField(
+				array(
+						'loop_structure_items',
+						'page'
+				),
+				'max( page_touched )',
+				array(
+						0 => "page_id = lsi_article",
+						1 => "lsi_structure = '".$this->getId()."'"
+				),
+				__METHOD__
+				);
+		if ($last_touched) {
+			return $last_touched;
+		} else {
+			return false;
+		}
+	
+	
+	}
+	
+	
 	
 }	
 

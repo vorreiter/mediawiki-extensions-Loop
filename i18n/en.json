@@ -20,5 +20,15 @@
 	"loopstructure-save-parse-error": "The format of the table of contents is invalid.",
 	"loopstructure-save-success": "The table of contents has been updated successfully.",
 	"submit": "Save",
-	"loopstructure-default-newpage-content": "This is a new page."
+	"loopstructure-default-newpage-content": "This is a new page.",
+	
+	"loopexport-specialpage-title" : "Export",
+	"loopexport": "Export",
+	
+	"right-loop-toc-edit": "Edit toc",
+	"right-loop-export-pdf": "Export LOOP as PDF",
+	"right-loop-export-xml": "Export LOOP as XML",
+	"right-loop-export-mp3": "Export LOOP as MP3",
+	"right-loop-export-epub": "Export LOOP as ePub",
+	"right-loop-export-html": "Export LOOP as Offline HTML"
 }
