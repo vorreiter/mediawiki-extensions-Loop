@@ -202,3 +202,26 @@ class LoopExportHtml extends LoopExport {
 
 }
 
+class LoopExportScorm extends LoopExport {
+
+	public function LoopExportScorm($structure) {
+		$this->structure = $structure;
+		$this->exportDirectory = '/export/Scorm';
+		$this->fileExtension = 'zip';
+	}
+
+	public function generateExportContent() {
+		$this->exportContent = ''; // ToDo: LoopScorm
+	}
+
+	public function sendExportHeader() {
+		$filename = $this->getExportFilename();
+
+		header("Last-Modified: " . date("D, d M Y H:i:s T", $this->structure->lastChanged()));
+		header("Content-Type: application/zip");
+		header('Content-Disposition: attachment; filename="' . $filename . '";' );
+		header("Content-Length: ". strlen($this->exportContent));
+
+	}
+
+}

@@ -28,6 +28,7 @@
 		"LoopExportMp3": "includes/LoopExport.php",
 		"LoopExportEpub": "includes/LoopExport.php",
 		"LoopExportHtml": "includes/LoopExport.php",
+		"LoopExportScorm": "includes/LoopExport.php",
 		"SpecialLoopExport": "includes/SpecialLoopExport.php"		
 	},
 	"Hooks": {
@@ -54,7 +55,8 @@
 			"loop-export-xml": false,
 			"loop-export-mp3": false,
 			"loop-export-epub": false,
-			"loop-export-html": false
+			"loop-export-html": false,
+			"loop-export-scorm": false
 		},
 		"user": {
 			"loop-toc-edit": false,
@@ -62,7 +64,8 @@
 			"loop-export-xml": true,
 			"loop-export-mp3": true,
 			"loop-export-epub": true,
-			"loop-export-html": false	
+			"loop-export-html": false,
+			"loop-export-scorm": false	
 		},
 		"autoconfirmed": {
 			"loop-toc-edit": false,
@@ -70,7 +73,8 @@
 			"loop-export-xml": true,
 			"loop-export-mp3": true,
 			"loop-export-epub": true,
-			"loop-export-html": false
+			"loop-export-html": false,
+			"loop-export-scorm": false
 		},
 		"bot": {
 			"loop-toc-edit": true,
@@ -78,7 +82,8 @@
 			"loop-export-xml": true,
 			"loop-export-mp3": true,
 			"loop-export-epub": true,
-			"loop-export-html": false
+			"loop-export-html": false,
+			"loop-export-scorm": false
 		},
 		"bureaucrat": {
 			"loop-toc-edit": true,
@@ -86,7 +91,8 @@
 			"loop-export-xml": true,
 			"loop-export-mp3": true,
 			"loop-export-epub": true,
-			"loop-export-html": true
+			"loop-export-html": true,
+			"loop-export-scorm": true
 		},		
 		"sysop": {
 			"loop-toc-edit": true,
@@ -94,7 +100,8 @@
 			"loop-export-xml": true,
 			"loop-export-mp3": true,
 			"loop-export-epub": true,
-			"loop-export-html": true
+			"loop-export-html": true,
+			"loop-export-scorm": true
 		}
 	},	
 	"AvailableRights": [
@@ -103,7 +110,8 @@
 		"loop-export-xml",
 		"loop-export-mp3",
 		"loop-export-epub",
-		"loop-export-html"
+		"loop-export-html",
+		"loop-export-scorm"
 	],
 	"MessagesDirs": {
 		"Loop": [
