@@ -14,7 +14,7 @@ class LoopStructure {
 	public $structureItems = array(); // array of structure items
 
 	
-	public function LoopStructure() {
+	function __construct() {
 		$this->id = 0;
 	}
 
@@ -299,6 +299,26 @@ class LoopStructure {
 	}
 	
 	
+	/**
+	 * Get the mainpage
+	 * @return Int
+	 */
+	function getMainpage() {
+		return $this->mainPage;
+	}
+	
+	/**
+	 * Get the structure title
+	 * @return string structure title
+	 */
+	function getTitle() {
+		$lsTitle = '';
+		if ($this->getMainpage()) {
+			$lsTitle = Title::newFromID($this->getMainpage())->getText();
+		}
+		return $lsTitle;
+	}	
+	
 	
 }	
 
@@ -549,6 +569,76 @@ class LoopStructureItem {
 			return false;
 		}
 	
+	}
+	
+	public function getArticle () {
+		return $this->article;
+	}
+	
+	public function getId () {
+		return $this->id;
+	}	
+
+	public function getTocLevel () {
+		return $this->tocLevel;
+	}
+	
+	public function getTocText () {
+		return $this->tocText;
+	}
+	
+	public function getTocNumber () {
+		return $this->tocNumber;
+	}	
+	
+	
+	public function getDirectChildItems () {
+	
+		$childs = array();
+	
+		$dbr = wfGetDB( DB_SLAVE );
+		$res = $dbr->select(
+				'loop_structure_items',
+				array(
+						'lsi_id',
+						'lsi_structure',
+						'lsi_article',
+						'lsi_previous_article',
+						'lsi_next_article',
+						'lsi_parent_article',
+						'lsi_toc_level',
+						'lsi_sequence',
+						'lsi_toc_number',
+						'lsi_toc_text'
+				),
+				array(
+						'lsi_parent_article' => $this->article,
+						'lsi_structure' => $this->structure
+				),
+				__METHOD__,
+				array(
+						'ORDER BY' => 'lsi_sequence ASC'
+				)
+				);
+	
+		while ($row = $res->fetchObject()) {
+	
+			$loopstructureItem = new LoopStructureItem();
+			$loopstructureItem->id = $row->lsi_id;
+			$loopstructureItem->structure = $row->lsi_structure;
+			$loopstructureItem->article = $row->lsi_article;
+			$loopstructureItem->previousArticle = $row->lsi_previous_article;
+			$loopstructureItem->nextArticle = $row->lsi_next_article;
+			$loopstructureItem->parentArticle = $row->lsi_parent_article;
+			$loopstructureItem->tocLevel = $row->lsi_toc_level;
+			$loopstructureItem->sequence = $row->lsi_sequence;
+			$loopstructureItem->tocNumber = $row->lsi_toc_number;
+			$loopstructureItem->tocText = $row->lsi_toc_text;
+				
+			$childs[] = $loopstructureItem;
+		}
+	
+		return $childs;
 	}
 	
 }

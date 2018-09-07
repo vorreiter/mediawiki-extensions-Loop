@@ -65,6 +65,13 @@ class SpecialLoopExport extends SpecialPage {
 			wfResetOutputBuffers();
 			$export->sendExportHeader();
 			echo $export->getExportContent();
+		} else {
+			
+			if ($user->isAllowed( 'loop-export-xml' )) {
+				$xmlExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), wfMessage ( 'export-linktext-xml' )->inContentLanguage ()->text () ); 
+				$out->addHtml ($xmlExportLink);
+			}
+			
 		}
 	}
 
