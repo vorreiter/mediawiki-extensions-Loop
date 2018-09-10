@@ -30,5 +30,7 @@
 	"right-loop-export-xml": "Right to export LOOP as XML",
 	"right-loop-export-mp3": "Right to export LOOP as MP3",
 	"right-loop-export-epub": "Right to export LOOP as ePub",
-	"right-loop-export-html": "Right to export LOOP as Offline HTML"
+	"right-loop-export-html": "Right to export LOOP as Offline HTML",
+	
+	"export-linktext-xml": "Linktext to download LOOP in export format XML"
 }
