@@ -88,7 +88,7 @@ class LoopExportXml extends LoopExport {
 	}
 
 	public function generateExportContent() {
-		$this->exportContent = ''; // ToDo: LoopXml
+		$this->exportContent = LoopXml::structure2xml();
 	}
 
 	public function sendExportHeader() {
