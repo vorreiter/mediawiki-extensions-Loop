@@ -90,6 +90,10 @@ class LoopXml {
 }
 
 
+
+class wiki2xml {
+	
+
 /**
  * wiki2xml was released 2005-2006 by Magnus Manske under the GPL.
  * see https://phabricator.wikimedia.org/diffusion/SVN/browse/trunk/parsers/graveyard/wiki2xml/php/wiki2xml.php
@@ -1651,4 +1655,3 @@ class wiki2xml
 	}
 
 }
-
