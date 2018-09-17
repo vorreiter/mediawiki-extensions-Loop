@@ -1652,3 +1652,7 @@ class wiki2xml
 	}
 
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> fix mistake from merging
