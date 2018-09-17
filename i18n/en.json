@@ -32,5 +32,15 @@
 	"right-loop-export-epub": "Export LOOP as ePub",
 	"right-loop-export-html": "Export LOOP as Offline HTML",
 	"right-loop-export-scorm": "Export LOOP as Scorm",
+	
+	"action-loop-toc-edit": "Edit toc",
+	"action-loop-export-pdf": "Export LOOP as PDF",
+	"action-loop-export-xml": "Export LOOP as XML",
+	"action-loop-export-mp3": "Export LOOP as MP3",
+	"action-loop-export-epub": "Export LOOP as ePub",
+	"action-loop-export-html": "Export LOOP as Offline HTML",
+	"action-loop-export-scorm": "Export LOOP as Scorm"
+
 	"export-linktext-xml": "Download as XML"
+
 }
