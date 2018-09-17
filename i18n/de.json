@@ -40,7 +40,7 @@
 	"action-loop-export-mp3": "Export LOOP als MP3",
 	"action-loop-export-epub": "Export LOOP als ePub",
 	"action-loop-export-html": "Export LOOP als Offline HTML",
-	"action-loop-export-scorm": "Export LOOP als Scorm Paket"
+	"action-loop-export-scorm": "Export LOOP als Scorm Paket",
   
 	"export-linktext-xml": "Als XML herunterladen"
 
