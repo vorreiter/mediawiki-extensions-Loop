@@ -40,4 +40,7 @@
 	"action-loop-export-epub": "Export LOOP as ePub",
 	"action-loop-export-html": "Export LOOP as Offline HTML",
 	"action-loop-export-scorm": "Export LOOP as Scorm"
+
+	"export-linktext-xml": "Download as XML"
+
 }
