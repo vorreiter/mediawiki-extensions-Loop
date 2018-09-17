@@ -1652,3 +1652,4 @@ class wiki2xml
 	}
 
 }
+
