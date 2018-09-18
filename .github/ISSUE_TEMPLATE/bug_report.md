@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Erstelle einen Bericht, um uns bei der Verbesserung zu helfen.
+about: Fehler gefunden? Hilf uns dabei ihn zu beseitigen.
 
 ---
 
