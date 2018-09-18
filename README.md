@@ -1,4 +1,4 @@
-## Willkommen bei LOOP
+# Willkommen bei LOOP
 
 LOOP ist ein am Institut für Lerndienstleistungen (ILD) der Technischen Hochschule Lübeck entwickeltes Online-Autorensystem mit dem Du ohne besondere Programmierkenntnisse online verfügbare, multimedial und didaktisch aufbereitete Lerninhalte erstellen kannst. Das Akronym LOOP steht für Learning Object Online Platform. 
 
@@ -8,7 +8,7 @@ Zurzeit arbeiten wir mit Hochdruck an LOOP 2.0, einem kompletten Redesign. Unter
 
 
 
-# Installation
+## Installation
 
 Du möchtest gerne Dein eigenes LOOP hosten? 
 
