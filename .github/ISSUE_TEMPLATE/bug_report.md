@@ -4,7 +4,7 @@ about: Fehler gefunden? Hilf uns dabei ihn zu beseitigen.
 
 ---
 
-**Beschreiben Sie den Fehler**
+**Beschreibe den Fehler**
 Eine klare und prägnante Beschreibung, was der Fehler ist.
 
 **Zur Reproduktion**
