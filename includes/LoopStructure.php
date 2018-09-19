@@ -428,6 +428,61 @@ class LoopStructureItem {
 	
 	}
 	
+
+	/**
+	 * Get item for given article and structure from database
+	 *
+	 * @param int $articleId
+	 * @param int $structure
+	 */
+	public static function newFromToctext( $toctext ) {
+	
+		$dbr = wfGetDB( DB_SLAVE );
+		$res = $dbr->select(
+				'loop_structure_items',
+				array(
+						'lsi_id',
+						'lsi_article',
+						'lsi_previous_article',
+						'lsi_next_article',
+						'lsi_parent_article',
+						'lsi_toc_level',
+						'lsi_sequence',
+						'lsi_toc_number',
+						'lsi_toc_text'
+				),
+				array(
+						'lsi_toc_text' => $toctext
+				),
+				__METHOD__,
+				array(
+						'ORDER BY' => 'lsi_sequence ASC'
+				)
+		);
+	
+		if( $row = $res->fetchObject() ) {
+	
+			$loopStructureItem = new LoopStructureItem();
+			$loopStructureItem->id = $row->lsi_id;
+			$loopStructureItem->article = $row->lsi_article;
+			$loopStructureItem->previousArticle = $row->lsi_previous_article;
+			$loopStructureItem->nextArticle = $row->lsi_next_article;
+			$loopStructureItem->parentArticle = $row->lsi_parent_article;
+			$loopStructureItem->tocLevel = $row->lsi_toc_level;
+			$loopStructureItem->sequence = $row->lsi_sequence;
+			$loopStructureItem->tocNumber = $row->lsi_toc_number;
+			$loopStructureItem->tocText = $row->lsi_toc_text;
+	
+			return $loopStructureItem;
+	
+		} else {
+	
+			return false;
+	
+		}
+	
+	}	
+	
 	public function getPreviousChapterItem () {
 		
 		$dbr = wfGetDB( DB_SLAVE );

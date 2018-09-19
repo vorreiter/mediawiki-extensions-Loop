@@ -44,7 +44,7 @@ class LoopXml {
 		
 		$wiki2xml = new wiki2xml ();
 		$xml = "<article ";
-		$xml .= "id=\"article" . $structureItem->getId () . "\" ";
+		$xml .= "id=\"article" . $structureItem->getArticle() . "\" ";
 		$xml .= 'toclevel="'.$structureItem->getTocLevel().'" ';
 		$xml .= 'tocnumber="'.$structureItem->getTocNumber().'" ';
 		$xml .= 'toctext="'.htmlspecialchars($structureItem->getTocText()).'" ';		
@@ -62,7 +62,7 @@ class LoopXml {
 		foreach ($childs as $child) {
 	
 			$toc_xml .= "\n<page ";
-			$toc_xml .= 'id="article'.$child->getId().'" ';
+			$toc_xml .= 'id="article'.$child->getArticle().'" ';
 			$toc_xml .= 'toclevel="'.$child->getTocLevel().'" ';
 			$toc_xml .= 'tocnumber="'.$child->getTocNumber().'" ';
 			$toc_xml .= 'toctext="'.htmlspecialchars($child->getTocText()).'" ';
@@ -78,12 +78,153 @@ class LoopXml {
 		$toc_xml .= "</chapter>";
 	
 		if ($structureItem->getTocLevel() == 0) {
-			$toc_xml = "<chapter>\n<page id=\"article".$structureItem->getId()."\" toclevel=\"".$structureItem->getTocLevel()."\" tocnumber=\"".$structureItem->getTocNumber()."\" toctext=\"".htmlspecialchars($structureItem->getTocText())."\" >".$toc_xml."</page></chapter>";
+			$toc_xml = "<chapter>\n<page id=\"article".$structureItem->getArticle()."\" toclevel=\"".$structureItem->getTocLevel()."\" tocnumber=\"".$structureItem->getTocNumber()."\" toctext=\"".htmlspecialchars($structureItem->getTocText())."\" >".$toc_xml."</page></chapter>";
 		}
 	
 	
 		return $toc_xml;
 	}	
+	
+	
+	
+	public static function error_handler($errno, $errstr, $errfile, $errline)
+	{
+		return true;
+	}
+	
+	
+	public static function transform_link($input) {
+	
+		libxml_use_internal_errors(true);
+	
+		$input_object=$input[0];
+	
+		if ($input_object->hasAttribute('type')) {
+			$link_parts['type']=$input_object->getAttribute('type');
+		}
+		if ($input_object->hasAttribute('href')) {
+			$link_parts['href']=$input_object->getAttribute('href');
+		}
+	
+		$link_childs=$input_object->childNodes;
+		$num_childs=$link_childs->length;
+	
+		for ($i = 0; $i < $num_childs; $i++) {
+			$child=$link_childs->item($i);
+			if (isset($child->tagName)) {
+				$child_name=$child->tagName;
+				if ($child_name=='') {$child_name='text';}
+				$child_value=$child->textContent;
+			} else {
+				$child_name='text';
+				$child_value=$child->textContent;
+			}
+	
+			if ($child_name == 'part') {
+				if (substr($child_value, -2) == 'px') {
+					$child_name = 'width';
+					$child_value = substr($child_value,0,-2);
+				} elseif (($child_value == 'right') || ($child_value == 'left') || ($child_value == 'center')) {
+					$child_name = 'align';
+	
+				}
+			}
+			$link_parts[$child_name]=$child_value;
+		}
+		if (!array_key_exists('type', $link_parts)) {
+			$link_parts['type']='internal';
+		}
+		if (array_key_exists('text', $link_parts)) {
+			$link_parts['text']=htmlspecialchars($link_parts['text']);
+		}
+	
+		$return_xml = '';
+	
+		if ($link_parts['type']=='external') {
+			$return_xml =  '<php_link_external href="'.$link_parts['href'].'">'.$link_parts['text'].'</php_link_external>' ;
+		} else {
+			if (isset($link_parts['target'])) {
+				$target_title = Title::newFromText($link_parts['target']);
+				$target_ns = $target_title->getNamespace();
+	
+				if ($target_ns == NS_FILE) {
+					$file = wfLocalFile($target_title);
+					if (is_object($file)) {
+						$target_file=$file->getLocalRefPath();
+						$target_url=$file->getFullUrl();
+						if (is_file($target_file)) {
+							$allowed_extensions = array('jpg','jpeg','gif','png','svg','tiff','bmp','eps','wmf','cgm');
+							if (in_array($file->getExtension(), $allowed_extensions)) {
+									
+								if (array_key_exists('width', $link_parts)) {
+									$width=0.214*intval($link_parts['width']);
+									if ($width>150) {
+										$imagewidth='150mm';
+									} else {
+										$imagewidth=round($width,0).'mm';
+									}
+								} else {
+									$size=getimagesize($target_file);
+									$width=0.214*intval($size[0]);
+									if ($width>150) {
+										$imagewidth='150mm';
+									} else {
+										$imagewidth=round($width,0).'mm';
+									}
+								}
+									
+								$return_xml =  '<php_link_image imagepath="'.$target_url.'" imagewidth="'.$imagewidth.'" ';
+								if (isset($link_parts['align'])) {
+									$return_xml .= ' align="'.$link_parts['align'].'" ';
+								}
+								$return_xml .=  '></php_link_image>';
+									
+									
+							}
+						}
+					}
+				} elseif ($target_ns == NS_CATEGORY) {
+					// Kategorie-Link nicht ausgeben
+	
+				} else {
+					// internal link
+					if (!array_key_exists('text', $link_parts)) {
+						if(array_key_exists('part',$link_parts)) {
+							$link_parts['text']=$link_parts['part'];
+						} else {
+							$link_parts['text']=$link_parts['target'];
+						}
+					}
+					if (!array_key_exists('href', $link_parts)) {
+						$link_parts['href']=$link_parts['target'];
+					}
+					
+					if ($structureitem = LoopStructureItem::newFromToctext( $link_parts['href'] )) {
+						$link_parts['href'] = 'article'.$structureitem->getArticle();
+					}
+					
+					$return_xml =  '<php_link_internal href="'.$link_parts['href'].'">'.$link_parts['text'].'</php_link_internal>' ;
+				}
+			}
+		}
+		$return = new DOMDocument;
+	
+		$old_error_handler = set_error_handler("LoopXml::error_handler");
+		libxml_use_internal_errors(true);
+	
+		try {
+			$return->loadXml($return_xml);
+		} catch ( Exception $e ) {
+	
+		}
+		restore_error_handler();
+	
+	
+		return $return;
+	
+	
+	}	
+	
 	
 }
 
