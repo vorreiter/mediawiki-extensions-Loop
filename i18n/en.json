@@ -41,6 +41,7 @@
 	"action-loop-export-html": "Export LOOP as Offline HTML",
 	"action-loop-export-scorm": "Export LOOP as Scorm",
 
-	"export-linktext-xml": "Download as XML"
+	"export-linktext-xml": "Download as XML",
+	"export-linktext-pdf": "Download as PDF"
 
 }

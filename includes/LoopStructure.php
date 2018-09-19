@@ -191,6 +191,9 @@ class LoopStructure {
 	}
 	
 	public function getStructureItems() {
+		if (!$this->structureItems) {
+			$this->loadStructureItems();
+		}
 		return $this->structureItems;
 	}
 	

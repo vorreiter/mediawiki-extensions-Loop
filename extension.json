@@ -23,6 +23,7 @@
 		"SpecialLoopStructure": "includes/SpecialLoopStructure.php",
 		"SpecialLoopStructureEdit": "includes/SpecialLoopStructure.php",
 		"LoopXml": "includes/LoopXml.php",
+		"LoopPdf": "includes/LoopPdf.php",
 		"LoopExport": "includes/LoopExport.php",
 		"LoopExportPdf": "includes/LoopExport.php",
 		"LoopExportXml": "includes/LoopExport.php",
@@ -122,5 +123,15 @@
 	"ExtensionMessagesFiles": {
 		"LoopAlias": "Loop.i18n.alias.php"
 	},		
+	"config": {
+        "Xmlfo2PdfServiceUrl": {
+        	"value" : "",
+        	"description" : "URL of the Service to convert XMLFO to PDF"
+        },
+        "Xmlfo2PdfServiceToken": {
+        	"value" : "",
+        	"description" : "Token for the Service to convert XMLFO to PDF"
+        }
+	}, 	
 	"manifest_version": 2
 }

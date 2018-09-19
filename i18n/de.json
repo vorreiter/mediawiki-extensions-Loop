@@ -42,7 +42,8 @@
 	"action-loop-export-html": "Export LOOP als Offline HTML",
 	"action-loop-export-scorm": "Export LOOP als Scorm Paket",
   
-	"export-linktext-xml": "Als XML herunterladen"
+	"export-linktext-xml": "Als XML herunterladen",
+	"export-linktext-pdf": "Als PDF herunterladen"
 
 
 }

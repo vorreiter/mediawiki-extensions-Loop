@@ -1,11 +1,9 @@
 <?php
 class LoopXml {
-	public static function structure2xml() {
+	public static function structure2xml(LoopStructure $loopStructure) {
 		global $wgCanonicalServer, $wgLanguageCode;
 		
-		$loopStructure = new LoopStructure ();
-		$loopStructure->loadStructureItems ();
-		$loopStructureItems = $loopStructure->getStructureItems ();		
+		$loopStructureItems = $loopStructure->getStructureItems();		
 		
 		$langParts = mb_split("-",$wgLanguageCode);
 		
@@ -39,7 +37,7 @@ class LoopXml {
 		
 		return $xml;
 	}
-	public static function structureItem2xml($structureItem) {
+	public static function structureItem2xml(LoopStructureItem $structureItem) {
 		$content = WikiPage::newFromID ( $structureItem->getArticle () )->getContent ()->getNativeData ();
 		
 		$content = html_entity_decode($content);
@@ -57,7 +55,7 @@ class LoopXml {
 	}
 	
 	
-	private static function structureItemToc($structureItem) {
+	private static function structureItemToc(LoopStructureItem $structureItem) {
 		$toc_xml = "<chapter>";
 	
 		$childs = $structureItem->getDirectChildItems();
