@@ -67,10 +67,19 @@ class SpecialLoopExport extends SpecialPage {
 			echo $export->getExportContent();
 		} else {
 			
+			$out->addHtml('<ul>');
+			
 			if ($user->isAllowed( 'loop-export-xml' )) {
 				$xmlExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), wfMessage ( 'export-linktext-xml' )->inContentLanguage ()->text () ); 
-				$out->addHtml ($xmlExportLink);
+				$out->addHtml ('<li>'.$xmlExportLink.'</li>');
 			}
+			
+			if ($user->isAllowed( 'loop-export-pdf' )) {
+				$pdfExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), wfMessage ( 'export-linktext-pdf' )->inContentLanguage ()->text () );
+				$out->addHtml ('<li>'.$pdfExportLink.'</li>');
+			}
+			
+			$out->addHtml('</ul>');
 			
 		}
 	}

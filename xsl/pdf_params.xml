@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<pageheight>297mm</pageheight>
+	<pagewidth>210mm</pagewidth>
+
+	<hyphenate>true</hyphenate>
+
+	<font_family>Cambria, 'Cambria Math'</font_family>
+</config>

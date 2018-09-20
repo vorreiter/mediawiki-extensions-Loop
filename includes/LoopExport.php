@@ -81,14 +81,14 @@ abstract class LoopExport {
 	
 class LoopExportXml extends LoopExport {
 
-	public function LoopExportXml($structure) {
+	public function __construct($structure) {
 		$this->structure = $structure;
 		$this->exportDirectory = '/export/xml';
 		$this->fileExtension = 'xml';
 	}
 
 	public function generateExportContent() {
-		$this->exportContent = LoopXml::structure2xml();
+		$this->exportContent = LoopXml::structure2xml($this->structure);
 	}
 
 	public function sendExportHeader() {
@@ -99,6 +99,11 @@ class LoopExportXml extends LoopExport {
 		header("Content-Type: application/xml; charset=utf-8");
 		header('Content-Disposition: attachment; filename="' . $filename . '";' );
 
+	}
+	
+	// for Development
+	public function getExistingExportFile() {
+		return false;
 	}
 }
 
@@ -112,7 +117,7 @@ class LoopExportPdf extends LoopExport {
 	}
 
 	public function generateExportContent() {
-		$this->exportContent = ''; // ToDo: LoopPdf
+		$this->exportContent = LoopPdf::structure2pdf($this->structure);
 	}
 
 	public function sendExportHeader() {
@@ -125,12 +130,17 @@ class LoopExportPdf extends LoopExport {
 		header("Content-Length: ". strlen($this->exportContent));
 
 	}
+	
+	// for Development
+	public function getExistingExportFile() {
+		return false; 
+	}
 }
 
 
 class LoopExportMp3 extends LoopExport {
 
-	public function LoopExportMp3($structure) {
+	public function __construct($structure) {
 		$this->structure = $structure;
 		$this->exportDirectory = '/export/mp3';
 		$this->fileExtension = 'zip';
@@ -156,7 +166,7 @@ class LoopExportMp3 extends LoopExport {
 
 class LoopExportEpub extends LoopExport {
 
-	public function LoopExportEpub($structure) {
+	public function __construct($structure) {
 		$this->structure = $structure;
 		$this->exportDirectory = '/export/epub';
 		$this->fileExtension = 'epub';
@@ -180,7 +190,7 @@ class LoopExportEpub extends LoopExport {
 
 class LoopExportHtml extends LoopExport {
 
-	public function LoopExportHtml($structure) {
+	public function __construct($structure) {
 		$this->structure = $structure;
 		$this->exportDirectory = '/export/html';
 		$this->fileExtension = 'zip';
@@ -204,7 +214,7 @@ class LoopExportHtml extends LoopExport {
 
 class LoopExportScorm extends LoopExport {
 
-	public function LoopExportScorm($structure) {
+	public function __construct($structure) {
 		$this->structure = $structure;
 		$this->exportDirectory = '/export/Scorm';
 		$this->fileExtension = 'zip';
