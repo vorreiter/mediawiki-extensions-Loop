@@ -362,9 +362,23 @@
 		<xsl:attribute name="font-size">12.5pt</xsl:attribute>
 		<xsl:attribute name="font-weight">normal</xsl:attribute>
 		<xsl:attribute name="line-height">18.5pt</xsl:attribute>
-	</xsl:template>	
-	<xsl:template name="font_subsubhead">
+	</xsl:template>
+	
+	
+	<xsl:template name="font_subsubsubsubhead">
 		<xsl:attribute name="font-size">11.5pt</xsl:attribute>
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+		<xsl:attribute name="line-height">18.5pt</xsl:attribute>
+	</xsl:template>		
+	<xsl:template name="font_subsubsubhead">
+		<xsl:attribute name="font-size">11.5pt</xsl:attribute>
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+		<xsl:attribute name="line-height">18.5pt</xsl:attribute>
+		<xsl:attribute name="margin-top">7pt</xsl:attribute>
+	</xsl:template>	
+		
+	<xsl:template name="font_subsubhead">
+		<xsl:attribute name="font-size">12.5pt</xsl:attribute>
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
 		<xsl:attribute name="line-height">18.5pt</xsl:attribute>
 		<xsl:attribute name="margin-top">7pt</xsl:attribute>
@@ -389,10 +403,21 @@
 	</xsl:template>	
 	
 	<xsl:template match="paragraph">
-		<fo:block margin-top="7pt">
-			<xsl:call-template name="font_normal"></xsl:call-template>
-			<xsl:apply-templates></xsl:apply-templates>
-		</fo:block>
+		<xsl:choose>
+			<xsl:when test="preceding::*[1][name()='heading' and (@level='4' or @level='5')]">
+				<fo:block >
+					<xsl:call-template name="font_normal"></xsl:call-template>
+					<xsl:apply-templates></xsl:apply-templates>
+				</fo:block>	
+			</xsl:when>
+			<xsl:otherwise>
+	
+				<fo:block margin-top="7pt">
+					<xsl:call-template name="font_normal"></xsl:call-template>
+					<xsl:apply-templates></xsl:apply-templates>
+				</fo:block>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template match="preblock" >
@@ -526,8 +551,11 @@
 						<xsl:when test="$level='3'">
 							<xsl:call-template name="font_subsubhead"></xsl:call-template>
 						</xsl:when>
+						<xsl:when test="$level='4'">
+							<xsl:call-template name="font_subsubsubhead"></xsl:call-template>
+						</xsl:when>						
 						<xsl:otherwise>
-							<xsl:call-template name="font_subsubhead"></xsl:call-template>
+							<xsl:call-template name="font_subsubsubsubhead"></xsl:call-template>
 						</xsl:otherwise>
 					</xsl:choose>
 					<!-- <xsl:value-of select="."></xsl:value-of> -->

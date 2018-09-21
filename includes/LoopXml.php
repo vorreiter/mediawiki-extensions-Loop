@@ -47,7 +47,8 @@ class LoopXml {
 		$xml .= "id=\"article" . $structureItem->getArticle() . "\" ";
 		$xml .= 'toclevel="'.$structureItem->getTocLevel().'" ';
 		$xml .= 'tocnumber="'.$structureItem->getTocNumber().'" ';
-		$xml .= 'toctext="'.htmlspecialchars($structureItem->getTocText()).'" ';		
+		#$xml .= 'toctext="'.htmlspecialchars($structureItem->getTocText()).'" ';		
+		$xml .= 'toctext="'.$structureItem->getTocText().'" ';
 		$xml .= ">\n";
 		$xml .= $wiki2xml->parse ( $content );
 		$xml .= "\n</article>\n";
@@ -65,7 +66,8 @@ class LoopXml {
 			$toc_xml .= 'id="article'.$child->getArticle().'" ';
 			$toc_xml .= 'toclevel="'.$child->getTocLevel().'" ';
 			$toc_xml .= 'tocnumber="'.$child->getTocNumber().'" ';
-			$toc_xml .= 'toctext="'.htmlspecialchars($child->getTocText()).'" ';
+			#$toc_xml .= 'toctext="'.htmlspecialchars($child->getTocText()).'" ';
+			$toc_xml .= 'toctext="'.$child->getTocText().'" ';
 			$toc_xml .= ">";
 				
 			if ($subchilds = $child->getDirectChildItems()) {
