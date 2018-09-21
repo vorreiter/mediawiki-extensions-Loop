@@ -293,7 +293,7 @@ class LoopStructure {
 				__METHOD__
 				);
 		if ($last_touched) {
-			return $last_touched;
+			return (int)$last_touched;
 		} else {
 			return false;
 		}

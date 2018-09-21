@@ -110,7 +110,7 @@ class LoopExportXml extends LoopExport {
 
 class LoopExportPdf extends LoopExport {
 
-	public function LoopExportPdf($structure) {
+	public function __construct($structure) {
 		$this->structure = $structure;
 		$this->exportDirectory = '/export/pdf';
 		$this->fileExtension = 'pdf';
