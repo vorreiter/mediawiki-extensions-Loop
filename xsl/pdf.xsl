@@ -409,6 +409,135 @@
 		<xsl:text> </xsl:text>
 	</xsl:template>		
 	
+	<xsl:template match="br">
+		<xsl:choose>
+			<xsl:when test="preceding::node()[1][name()='br']">
+				<fo:block white-space-collapse="false" white-space-treatment="preserve" font-size="0pt" >.</fo:block>	
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:block></fo:block>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template match="xhtml:br">
+		<xsl:choose>
+			<xsl:when test="preceding::node()[1][name()='xhtml:br']">
+				<fo:block white-space-collapse="false" white-space-treatment="preserve" font-size="0pt" >.</fo:block>	
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:block></fo:block>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>		
+	
+
+	<xsl:template match="sub">
+		<fo:inline vertical-align="sub" font-size="0.8em"><xsl:apply-templates></xsl:apply-templates></fo:inline>
+	</xsl:template>	
+	
+	<xsl:template match="sup">
+		<fo:inline vertical-align="super" font-size="0.8em"><xsl:apply-templates></xsl:apply-templates></fo:inline>
+	</xsl:template>	
+
+	<xsl:template match="xhtml:sub">
+		<fo:inline vertical-align="sub" font-size="0.8em"><xsl:apply-templates></xsl:apply-templates></fo:inline>
+	</xsl:template>	
+	
+	<xsl:template match="xhtml:sup">
+		<fo:inline vertical-align="super" font-size="0.8em"><xsl:apply-templates></xsl:apply-templates></fo:inline>
+	</xsl:template>	
+	
+	<xsl:template match="big">
+		<fo:inline>
+			<xsl:call-template name="font_big"></xsl:call-template>
+			<xsl:apply-templates></xsl:apply-templates>
+		</fo:inline>
+	</xsl:template>	
+	
+	<xsl:template match="small">
+		<fo:inline>
+			<xsl:call-template name="font_small"></xsl:call-template>
+			<xsl:apply-templates></xsl:apply-templates>
+		</fo:inline>
+	</xsl:template>			
+
+	<xsl:template match="xhtml:big">
+		<fo:inline>
+			<xsl:call-template name="font_big"></xsl:call-template>
+			<xsl:apply-templates></xsl:apply-templates>
+		</fo:inline>
+	</xsl:template>	
+	
+	<xsl:template match="xhtml:small">
+		<fo:inline>
+			<xsl:call-template name="font_small"></xsl:call-template>
+			<xsl:apply-templates></xsl:apply-templates>
+		</fo:inline>
+	</xsl:template>		
+
+	<xsl:template match="bold">
+		<fo:inline font-weight="bold">
+			<xsl:apply-templates></xsl:apply-templates>
+		</fo:inline>
+	</xsl:template>
+	<xsl:template match="b">
+		<fo:inline font-weight="bold">
+			<xsl:apply-templates></xsl:apply-templates>
+		</fo:inline>
+	</xsl:template>
+	<xsl:template match="strong">
+		<fo:inline font-weight="bold">
+			<xsl:apply-templates></xsl:apply-templates>
+		</fo:inline>
+	</xsl:template>	
+
+	<xsl:template match="italics">
+		<fo:inline font-style="italic">
+			<xsl:apply-templates></xsl:apply-templates>
+		</fo:inline>
+	</xsl:template>	
+	
+	
+	
+	<xsl:template match="heading">
+		<xsl:variable name="level" select="@level"></xsl:variable>
+		<xsl:choose>
+			<xsl:when test=".=ancestor::article/@title">
+			
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:block keep-with-next.within-page="always">
+					<xsl:attribute name="id">
+					<xsl:value-of select="generate-id()"/>
+					<!-- 
+						<xsl:value-of select="ancestor::article/@title"></xsl:value-of>
+						<xsl:text>#</xsl:text>
+						<xsl:value-of select="."></xsl:value-of>
+						 -->
+					</xsl:attribute>
+					<xsl:choose>
+						<xsl:when test="$level='1'">
+							<xsl:call-template name="font_head"></xsl:call-template>
+						</xsl:when>
+						<xsl:when test="$level='2'">
+							<xsl:call-template name="font_subhead"></xsl:call-template>
+						</xsl:when>
+						<xsl:when test="$level='3'">
+							<xsl:call-template name="font_subsubhead"></xsl:call-template>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="font_subsubhead"></xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
+					<!-- <xsl:value-of select="."></xsl:value-of> -->
+					<xsl:apply-templates></xsl:apply-templates>
+				</fo:block>
+			</xsl:otherwise>
+		</xsl:choose>
+		
+	</xsl:template>			
+	
 	
 	<xsl:template match="link">
 		<xsl:apply-templates select="php:function('LoopXml::transform_link', .)"></xsl:apply-templates>
