@@ -147,7 +147,7 @@ class LoopExportMp3 extends LoopExport {
 	}
 
 	public function generateExportContent() {
-		$this->exportContent = ''; // ToDo: LoopMp3
+		$this->exportContent = LoopMp3::structure2mp3($this->structure);
 	}
 
 	public function sendExportHeader() {
@@ -160,6 +160,12 @@ class LoopExportMp3 extends LoopExport {
 		header("Content-Length: ". strlen($this->exportContent));
 		
 	}
+	
+	// for Development
+	public function getExistingExportFile() {
+		return false;
+	}	
+	
 }
 
 

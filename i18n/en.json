@@ -42,6 +42,7 @@
 	"action-loop-export-scorm": "Export LOOP as Scorm",
 
 	"export-linktext-xml": "Download as XML",
-	"export-linktext-pdf": "Download as PDF"
+	"export-linktext-pdf": "Download as PDF",
+	"export-linktext-mp3": "Download as MP3"
 
 }

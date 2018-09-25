@@ -78,6 +78,11 @@ class SpecialLoopExport extends SpecialPage {
 				$pdfExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), wfMessage ( 'export-linktext-pdf' )->inContentLanguage ()->text () );
 				$out->addHtml ('<li>'.$pdfExportLink.'</li>');
 			}
+
+			if ($user->isAllowed( 'loop-export-mp3' )) {
+				$mp3ExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), wfMessage ( 'export-linktext-mp3' )->inContentLanguage ()->text () );
+				$out->addHtml ('<li>'.$mp3ExportLink.'</li>');
+			}			
 			
 			$out->addHtml('</ul>');
 			

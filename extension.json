@@ -24,6 +24,7 @@
 		"SpecialLoopStructureEdit": "includes/SpecialLoopStructure.php",
 		"LoopXml": "includes/LoopXml.php",
 		"LoopPdf": "includes/LoopPdf.php",
+		"LoopMp3": "includes/LoopMp3.php",
 		"LoopExport": "includes/LoopExport.php",
 		"LoopExportPdf": "includes/LoopExport.php",
 		"LoopExportXml": "includes/LoopExport.php",
