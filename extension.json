@@ -39,6 +39,9 @@
 			"LoopUpdater::onLoadExtensionSchemaUpdates"
 		]
 	},
+	"HiddenPrefs": [
+		"LoopRenderMode"
+	],	
 	"SpecialPages": {
 		"LoopStructure": "SpecialLoopStructure",
 		"LoopStructureEdit": "SpecialLoopStructureEdit",

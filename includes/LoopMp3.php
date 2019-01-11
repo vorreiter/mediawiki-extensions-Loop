@@ -4,6 +4,9 @@ class LoopMp3 {
 	public static function structure2mp3(LoopStructure $loopStructure) {
 		global $IP, $wgUploadDirectory;
 		
+		
+		/*
+		
 		$structureItems  = $loopStructure->getStructureItems();
 				
 		$structureItemDir = $wgUploadDirectory.'/export/mp3/structureitems/';
@@ -45,12 +48,12 @@ class LoopMp3 {
 			
 			
 		}
+		*/
 		
 		
-		/*
 		$wiki_xml = LoopXml::structure2xml($loopStructure);
 		
-		var_dump($wiki_xml); exit;
+		#var_dump($wiki_xml); exit;
 		
 		try {
 			$xml = new DOMDocument();
@@ -77,7 +80,7 @@ class LoopMp3 {
 		
 		
 		var_dump($ssml); exit;
-		*/
+		
 		
 		
 		
